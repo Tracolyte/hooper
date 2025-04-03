@@ -1,6 +1,5 @@
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { Button } from "@/components/ui/button";
-import { HeroParallax } from "@/components/ui/hero-parallax";
 import { motion } from "framer-motion";
 import { ArrowRight, Users, MapPin, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -61,9 +60,9 @@ export default function HeroSection() {
       />
       
       <div className="container relative z-10 mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16 items-center">
+        <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto">
           <motion.div 
-            className="flex flex-col justify-center"
+            className="flex flex-col items-center justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -91,7 +90,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="max-w-2xl text-base md:text-lg lg:text-xl text-gray-300 mb-8"
+              className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl"
             >
               Hooper connects you to available courts and pickup games nearby.
               Real-time occupancy data, easy day passes, and player networking in one app.
@@ -101,7 +100,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-col xs:flex-row gap-4 mb-10"
+              className="flex flex-col xs:flex-row gap-4 mb-14"
             >
               <Button
                 onClick={handleEarlyAccessClick}
@@ -123,9 +122,9 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="w-full"
+              className="w-full max-w-3xl"
             >
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 md:gap-8">
                 {stats.map((stat, index) => (
                   <motion.div
                     key={index}
@@ -146,40 +145,6 @@ export default function HeroSection() {
                 ))}
               </div>
             </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-            className="relative mx-auto w-full max-w-[500px] lg:max-w-none lg:ml-auto"
-          >
-            <div className="absolute -inset-1 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-3xl blur-lg opacity-30"></div>
-            <div className="absolute inset-0 bg-gradient-to-r from-hooper-orange/20 to-hooper-brown/20 rounded-3xl"></div>
-            
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 shadow-2xl backdrop-blur-sm">
-              <HeroParallax 
-                imageUrl="https://images.unsplash.com/photo-1519861531473-9200262188bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-                className="h-[400px] sm:h-[450px] md:h-[500px] rounded-3xl shadow-2xl overflow-hidden"
-                overlayClassName="bg-gradient-to-t from-black via-black/70 to-transparent"
-              >
-                <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8">
-                  <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
-                    <div className="flex items-center gap-1">
-                      <div className="h-2 w-2 rounded-full bg-hooper-orange"></div>
-                      <span className="text-hooper-orange">Available Now</span>
-                    </div>
-                    <div className="h-1 w-1 rounded-full bg-white/40"></div>
-                    <div>2 courts open</div>
-                  </div>
-                  <div className="mb-1 sm:mb-2 text-xl sm:text-2xl font-bold">Downtown Recreation Center</div>
-                  <div className="mb-3 sm:mb-4 text-sm text-gray-300">3.2 miles away • Open until 10:00 PM</div>
-                  <Button className="bg-gradient-to-r from-hooper-orange to-hooper-brown hover:opacity-90 text-white rounded-full px-4 sm:px-6 py-2 h-auto text-sm sm:text-base">
-                    Get Day Pass
-                  </Button>
-                </div>
-              </HeroParallax>
-            </div>
           </motion.div>
         </div>
       </div>

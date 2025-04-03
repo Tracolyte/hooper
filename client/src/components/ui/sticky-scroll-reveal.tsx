@@ -10,7 +10,7 @@ interface StickyScrollRevealProps {
     description: string;
     step: number;
     icon?: React.ReactNode;
-    color?: "orange" | "blue" | "purple" | "green";
+    color?: "orange" | "blue" | "purple" | "green" | "brown";
   }[];
   contentClassName?: string;
 }
@@ -31,6 +31,7 @@ export function StickyScrollReveal({
     blue: "bg-hooper-blue",
     purple: "bg-purple-500",
     green: "bg-green-500",
+    brown: "bg-hooper-brown",
   };
 
   // Update the active item based on scroll progress
@@ -84,7 +85,7 @@ export function StickyScrollReveal({
         
         <div className="w-full md:w-[50%] h-[600px] flex items-center justify-center">
           <div className="relative animate-float">
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-hooper-orange to-hooper-blue rounded-xl blur opacity-30"></div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-xl blur opacity-30"></div>
             <div className="relative bg-hooper-dark-500 rounded-xl overflow-hidden border border-hooper-dark-300">
               <img
                 src="https://images.unsplash.com/photo-1504450758481-7338eba7524a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
