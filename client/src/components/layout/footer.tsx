@@ -8,23 +8,23 @@ export default function Footer() {
           <div className="mb-4 md:mb-0">
             <div className="text-xl font-black tracking-tighter text-white">
               <span className="text-hooper-orange">HOOP</span>
-              <span className="text-hooper-blue">ER</span>
+              <span className="text-hooper-brown">ER</span>
             </div>
           </div>
           
           <div className="flex space-x-6 mb-4 md:mb-0">
             <Link href="#">
-              <a className="text-hooper-dark-100 hover:text-white transition-colors">
+              <a className="text-hooper-dark-100 hover:text-hooper-orange transition-colors">
                 Privacy Policy
               </a>
             </Link>
             <Link href="#">
-              <a className="text-hooper-dark-100 hover:text-white transition-colors">
+              <a className="text-hooper-dark-100 hover:text-hooper-orange transition-colors">
                 Terms of Service
               </a>
             </Link>
             <Link href="#">
-              <a className="text-hooper-dark-100 hover:text-white transition-colors">
+              <a className="text-hooper-dark-100 hover:text-hooper-orange transition-colors">
                 Contact
               </a>
             </Link>

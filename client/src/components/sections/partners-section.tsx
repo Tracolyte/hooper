@@ -30,22 +30,22 @@ const benefits = [
     color: "orange"
   },
   {
-    icon: <BarChart2 className="h-5 w-5 text-hooper-blue" />,
+    icon: <BarChart2 className="h-5 w-5 text-hooper-brown" />,
     title: "Data Insights",
     description: "Gain valuable analytics on court usage patterns, popular times, and player demographics.",
-    color: "blue"
+    color: "brown"
   },
   {
-    icon: <Megaphone className="h-5 w-5 text-purple-500" />,
+    icon: <Megaphone className="h-5 w-5 text-hooper-orange" />,
     title: "Marketing Reach",
     description: "Promote your facility to a targeted audience of active basketball players in your area.",
-    color: "purple"
+    color: "orange"
   },
   {
-    icon: <Shield className="h-5 w-5 text-green-500" />,
+    icon: <Shield className="h-5 w-5 text-hooper-brown" />,
     title: "Simple Integration",
     description: "Easy setup with minimal hardware requirements and full support from our installation team.",
-    color: "green"
+    color: "brown"
   }
 ];
 
@@ -104,7 +104,15 @@ export default function PartnersSection() {
               {benefits.map((benefit, index) => (
                 <div key={index} className="bg-hooper-dark-400 rounded-xl p-6 border border-hooper-dark-300">
                   <div className="flex items-center mb-4">
-                    <div className={`w-10 h-10 rounded-full bg-${benefit.color === "orange" ? "hooper-orange" : benefit.color === "blue" ? "hooper-blue" : benefit.color === "purple" ? "purple-500" : "green-500"}/20 flex items-center justify-center mr-4`}>
+                    <div className={`w-10 h-10 rounded-full ${
+                        benefit.color === "orange" 
+                          ? "bg-hooper-orange/20" 
+                          : benefit.color === "brown" 
+                          ? "bg-hooper-brown/20" 
+                          : benefit.color === "purple" 
+                          ? "bg-purple-500/20" 
+                          : "bg-green-500/20"
+                      } flex items-center justify-center mr-4`}>
                       {benefit.icon}
                     </div>
                     <h3 className="text-xl font-bold">{benefit.title}</h3>
@@ -132,7 +140,7 @@ export default function PartnersSection() {
                           <Input
                             placeholder="Your Gym or Recreation Center"
                             {...field}
-                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-blue"
+                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-brown"
                           />
                         </FormControl>
                         <FormMessage />
@@ -150,7 +158,7 @@ export default function PartnersSection() {
                           <Input
                             placeholder="Your Name"
                             {...field}
-                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-blue"
+                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-orange"
                           />
                         </FormControl>
                         <FormMessage />
@@ -169,7 +177,7 @@ export default function PartnersSection() {
                             type="email"
                             placeholder="your@email.com"
                             {...field}
-                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-blue"
+                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-brown"
                           />
                         </FormControl>
                         <FormMessage />
@@ -188,7 +196,7 @@ export default function PartnersSection() {
                             type="tel"
                             placeholder="(123) 456-7890"
                             {...field}
-                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-blue"
+                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-orange"
                           />
                         </FormControl>
                         <FormMessage />
@@ -207,7 +215,7 @@ export default function PartnersSection() {
                             placeholder="Tell us about your facility and basketball courts"
                             rows={4}
                             {...field}
-                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-blue"
+                            className="w-full bg-hooper-dark-500 border border-hooper-dark-300 text-white focus:ring-hooper-brown"
                           />
                         </FormControl>
                         <FormMessage />
@@ -217,7 +225,7 @@ export default function PartnersSection() {
                   
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-hooper-blue to-purple-500 text-white font-semibold py-6 h-auto rounded-md hover:shadow-lg hover:shadow-hooper-blue/20 transition-all"
+                    className="w-full bg-gradient-to-r from-hooper-brown to-hooper-orange text-white font-semibold py-6 h-auto rounded-md hover:shadow-lg hover:shadow-hooper-orange/20 transition-all"
                     disabled={interestMutation.isPending}
                   >
                     {interestMutation.isPending ? "Submitting..." : "Submit Interest"}

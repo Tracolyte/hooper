@@ -23,7 +23,7 @@ export default function Header() {
             <a className="flex items-center">
               <div className="text-2xl font-black tracking-tighter text-white">
                 <span className="text-hooper-orange">HOOP</span>
-                <span className="text-hooper-blue">ER</span>
+                <span className="text-hooper-brown">ER</span>
               </div>
             </a>
           </Link>
@@ -55,7 +55,7 @@ export default function Header() {
               </a>
             </Link>
             <Button 
-              className="bg-gradient-to-r from-hooper-orange to-hooper-blue text-white font-sans font-semibold hover:shadow-lg hover:shadow-hooper-orange/20 transition-all"
+              className="button-gradient text-white font-sans font-semibold hover:shadow-lg hover:shadow-hooper-orange/20 transition-all"
               onClick={() => {
                 const emailSignupSection = document.getElementById("email-signup");
                 if (emailSignupSection) {
@@ -112,7 +112,7 @@ export default function Header() {
                   </a>
                 </Link>
                 <Button 
-                  className="w-full bg-gradient-to-r from-hooper-orange to-hooper-blue text-white font-sans font-semibold hover:shadow-lg hover:shadow-hooper-orange/20 transition-all"
+                  className="w-full button-gradient text-white font-sans font-semibold hover:shadow-lg hover:shadow-hooper-orange/20 transition-all"
                   onClick={() => {
                     closeSheet();
                     const emailSignupSection = document.getElementById("email-signup");

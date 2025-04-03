@@ -17,7 +17,7 @@ const features = [
     title: "Game Finding",
     icon: <Users className="h-6 w-6 text-white" />,
     description: "Join existing games or create your own. Filter by skill level, game type, and more.",
-    gradient: "blue",
+    gradient: "brown",
     features: [
       "Skill-level matching",
       "Game scheduling",
@@ -28,7 +28,7 @@ const features = [
     title: "Easy Day Passes",
     icon: <CreditCard className="h-6 w-6 text-white" />,
     description: "Purchase digital day passes for partner facilities directly through the app with no membership required.",
-    gradient: "purple",
+    gradient: "orange",
     features: [
       "One-click payments",
       "Digital entry passes",
@@ -39,7 +39,7 @@ const features = [
     title: "Player Groups",
     icon: <MessageSquare className="h-6 w-6 text-white" />,
     description: "Create and join groups of players with similar schedules, skill levels, or location preferences.",
-    gradient: "green",
+    gradient: "brown",
     features: [
       "Group messaging",
       "Game scheduling",

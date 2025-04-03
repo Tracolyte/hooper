@@ -61,6 +61,15 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        hooper: {
+          orange: "var(--hooper-orange)",
+          brown: "var(--hooper-brown)",
+          "dark-500": "var(--hooper-dark-500)",
+          "dark-400": "var(--hooper-dark-400)",
+          "dark-300": "var(--hooper-dark-300)",
+          "dark-200": "var(--hooper-dark-200)",
+          "dark-100": "var(--hooper-dark-100)",
+        },
       },
       keyframes: {
         "accordion-down": {
@@ -79,10 +88,22 @@ export default {
             height: "0",
           },
         },
+        float: {
+          "0%, 100%": {
+            transform: "translateY(0)",
+          },
+          "50%": {
+            transform: "translateY(-15px)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        float: "float 6s ease-in-out infinite",
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
       },
     },
   },

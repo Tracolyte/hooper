@@ -18,7 +18,7 @@ interface BentoCardProps {
   title: string;
   icon?: React.ReactNode;
   description?: string;
-  gradient?: "orange" | "blue" | "purple" | "green";
+  gradient?: "orange" | "brown" | "purple" | "green";
   features?: string[];
   children?: React.ReactNode;
 }
@@ -34,7 +34,7 @@ export function BentoCard({
 }: BentoCardProps) {
   const gradientClasses = {
     orange: "from-hooper-orange to-hooper-orange/50",
-    blue: "from-hooper-blue to-hooper-blue/50",
+    brown: "from-hooper-brown to-hooper-brown/50",
     purple: "from-purple-500 to-purple-500/50",
     green: "from-green-500 to-green-500/50",
   };
@@ -63,7 +63,7 @@ export function BentoCard({
                   xmlns="http://www.w3.org/2000/svg"
                   className={cn("h-5 w-5 mr-2 mt-0.5", {
                     'text-hooper-orange': gradient === 'orange',
-                    'text-hooper-blue': gradient === 'blue',
+                    'text-hooper-brown': gradient === 'brown',
                     'text-purple-500': gradient === 'purple',
                     'text-green-500': gradient === 'green',
                   })}

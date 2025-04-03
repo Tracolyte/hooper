@@ -61,8 +61,8 @@ export default function EmailSignup() {
   return (
     <section id="email-signup" className="py-20 md:py-28 bg-black relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-40 -right-40 w-96 h-96 bg-hooper-orange/10 rounded-full filter blur-3xl"></div>
-        <div className="absolute -bottom-20 -left-40 w-96 h-96 bg-hooper-blue/10 rounded-full filter blur-3xl"></div>
+        <div className="absolute top-40 -right-40 w-[400px] h-[400px] bg-hooper-orange/10 rounded-full filter blur-[100px]"></div>
+        <div className="absolute -bottom-20 -left-40 w-[400px] h-[400px] bg-hooper-brown/10 rounded-full filter blur-[100px]"></div>
       </div>
       
       <div className="container mx-auto px-4 md:px-6 relative">
@@ -123,7 +123,7 @@ export default function EmailSignup() {
                           <Checkbox
                             checked={field.value}
                             onCheckedChange={field.onChange}
-                            className="h-4 w-4 text-hooper-blue focus:ring-hooper-blue border-hooper-dark-300 rounded bg-hooper-dark-400"
+                            className="h-4 w-4 text-hooper-brown focus:ring-hooper-brown border-hooper-dark-300 rounded bg-hooper-dark-400"
                           />
                         </FormControl>
                         <FormLabel className="font-medium text-white">
