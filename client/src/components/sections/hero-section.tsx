@@ -2,9 +2,13 @@ import { BackgroundGradientAnimation } from "@/components/ui/background-gradient
 import { Button } from "@/components/ui/button";
 import { HeroParallax } from "@/components/ui/hero-parallax";
 import { motion } from "framer-motion";
-import { ArrowRight, Activity, MapPin, Clock } from "lucide-react";
+import { ArrowRight, Users, MapPin, Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function HeroSection() {
+  const isMobile = useIsMobile();
+
   const handleLearnMoreClick = () => {
     const problemSection = document.querySelector("#problem-section");
     if (problemSection) {
@@ -21,7 +25,7 @@ export default function HeroSection() {
 
   const stats = [
     { 
-      icon: <Activity className="w-5 h-5 text-hooper-orange" />, 
+      icon: <Users className="w-5 h-5 text-hooper-orange" />, 
       value: "20M+", 
       label: "Players Nationwide",
       delay: 0.1
@@ -41,7 +45,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-black py-20 md:py-32">
+    <section className="relative overflow-hidden bg-black pt-24 pb-16 sm:pt-32 sm:pb-20 md:py-32">
       <BackgroundGradientAnimation
         containerClassName="absolute inset-0 z-0"
         className="absolute inset-0 opacity-20"
@@ -77,16 +81,17 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl mb-6"
+              className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6"
             >
-              Find <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Basketball Courts</span> <br />& Games in Real-Time
+              Find <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Basketball Courts</span> 
+              <br className="hidden xs:inline" /> & Games in Real-Time
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="max-w-2xl text-lg md:text-xl text-gray-300 mb-8"
+              className="max-w-2xl text-base md:text-lg lg:text-xl text-gray-300 mb-8"
             >
               Hooper connects you to available courts and pickup games nearby.
               Real-time occupancy data, easy day passes, and player networking in one app.
@@ -96,11 +101,11 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 mb-10"
+              className="flex flex-col xs:flex-row gap-4 mb-10"
             >
               <Button
                 onClick={handleEarlyAccessClick}
-                className="bg-gradient-to-r from-hooper-orange to-hooper-brown text-white font-semibold px-8 py-3 h-auto rounded-full hover:shadow-lg hover:shadow-hooper-orange/20 transition-all hover:opacity-90"
+                className="bg-gradient-to-r from-hooper-orange to-hooper-brown text-white font-semibold px-6 sm:px-8 py-2.5 sm:py-3 h-auto rounded-full hover:shadow-lg hover:shadow-hooper-orange/20 transition-all hover:opacity-90"
               >
                 Get Early Access
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -108,7 +113,7 @@ export default function HeroSection() {
               <Button
                 onClick={handleLearnMoreClick}
                 variant="outline"
-                className="bg-white/5 text-white border-white/10 px-8 py-3 h-auto rounded-full font-semibold hover:bg-white/10 transition-all backdrop-blur-sm"
+                className="bg-white/5 text-white border-white/10 px-6 sm:px-8 py-2.5 sm:py-3 h-auto rounded-full font-semibold hover:bg-white/10 transition-all backdrop-blur-sm"
               >
                 Learn More
               </Button>
@@ -118,21 +123,25 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
+              className="w-full"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
                 {stats.map((stat, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + stat.delay, duration: 0.5 }}
-                    className="flex flex-col items-center rounded-xl bg-white/5 p-4 backdrop-blur-sm border border-white/5"
+                    className={cn(
+                      "flex flex-col items-center rounded-xl bg-white/5 p-3 sm:p-4 backdrop-blur-sm border border-white/5",
+                      index === 2 && isMobile && "col-span-2 mx-auto w-full max-w-[250px]"
+                    )}
                   >
-                    <div className="mb-1 rounded-full bg-black/20 p-2">
+                    <div className="mb-1 rounded-full bg-black/20 p-1.5 sm:p-2">
                       {stat.icon}
                     </div>
-                    <div className="text-2xl font-bold">{stat.value}</div>
-                    <div className="text-sm text-gray-400">{stat.label}</div>
+                    <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
+                    <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
                   </motion.div>
                 ))}
               </div>
@@ -143,7 +152,7 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.7 }}
-            className="relative mx-auto max-w-[600px] lg:ml-auto"
+            className="relative mx-auto w-full max-w-[500px] lg:max-w-none lg:ml-auto"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-3xl blur-lg opacity-30"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-hooper-orange/20 to-hooper-brown/20 rounded-3xl"></div>
@@ -151,21 +160,21 @@ export default function HeroSection() {
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/40 shadow-2xl backdrop-blur-sm">
               <HeroParallax 
                 imageUrl="https://images.unsplash.com/photo-1519861531473-9200262188bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-                className="h-[500px] rounded-3xl shadow-2xl overflow-hidden"
+                className="h-[400px] sm:h-[450px] md:h-[500px] rounded-3xl shadow-2xl overflow-hidden"
                 overlayClassName="bg-gradient-to-t from-black via-black/70 to-transparent"
               >
-                <div className="absolute bottom-0 left-0 w-full p-8">
-                  <div className="mb-4 flex items-center gap-2 text-sm">
+                <div className="absolute bottom-0 left-0 w-full p-5 sm:p-8">
+                  <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2 text-xs sm:text-sm">
                     <div className="flex items-center gap-1">
-                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
-                      <span className="text-green-500">Available Now</span>
+                      <div className="h-2 w-2 rounded-full bg-hooper-orange"></div>
+                      <span className="text-hooper-orange">Available Now</span>
                     </div>
                     <div className="h-1 w-1 rounded-full bg-white/40"></div>
                     <div>2 courts open</div>
                   </div>
-                  <div className="mb-2 text-2xl font-bold">Downtown Recreation Center</div>
-                  <div className="mb-4 text-gray-300">3.2 miles away • Open until 10:00 PM</div>
-                  <Button className="bg-hooper-orange hover:bg-hooper-orange/90 text-white rounded-full px-6">
+                  <div className="mb-1 sm:mb-2 text-xl sm:text-2xl font-bold">Downtown Recreation Center</div>
+                  <div className="mb-3 sm:mb-4 text-sm text-gray-300">3.2 miles away • Open until 10:00 PM</div>
+                  <Button className="bg-gradient-to-r from-hooper-orange to-hooper-brown hover:opacity-90 text-white rounded-full px-4 sm:px-6 py-2 h-auto text-sm sm:text-base">
                     Get Day Pass
                   </Button>
                 </div>
