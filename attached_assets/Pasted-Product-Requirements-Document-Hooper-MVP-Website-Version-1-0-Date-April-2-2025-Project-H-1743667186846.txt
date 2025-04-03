@@ -1,0 +1,158 @@
+Product Requirements Document: Hooper MVP Website
+Version: 1.0  
+Date: April 2, 2025  
+Project: Hooper MVP Marketing & Information Website
+
+---
+
+## 1. Introduction & Overview
+
+This document defines the product vision and implementation plan for the MVP version of the Hooper website. Built using Next.js with TypeScript, Tailwind CSS, shadcn/ui, and Aceternity UI, the website will introduce Hooper, communicate its unique value proposition, and generate early user and partner interest.
+
+---
+
+## 2. Goals
+
+- **Inform**: Explain Hooper's mission and benefits.
+- **Engage**: Use modern, dynamic visuals to keep users interested.
+- **Generate Leads**: Capture emails of players and partners.
+- **Establish Credibility**: Provide a polished online presence.
+
+---
+
+## 3. Target Audience
+
+- **Recreational Basketball Players**
+- **Gym Owners / Managers**
+- **Parks & Recreation Officials**
+- **Potential Investors / Stakeholders**
+
+---
+
+## 4. Non-Goals
+
+- No login or user authentication
+- No live court data display
+- No game scheduling or joining
+- No day pass purchases
+- No e-commerce or user profiles
+- No complex backend integrations
+
+---
+
+## 5. Technical Stack
+
+- **Framework**: Next.js (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Libraries**:
+  - shadcn/ui
+  - Aceternity UI
+
+---
+
+## 6. Design & UX
+
+- **Aesthetic**: Modern, clean, sports-tech inspired
+- **Responsiveness**: Desktop, tablet, mobile friendly
+- **Component Strategy**: Use Aceternity UI for hero/impact sections; shadcn/ui for layout and core UI
+
+---
+
+## 7. Functional Requirements
+
+### 7.1. Global Components
+
+**Header.tsx**
+- Logo (left), nav links ("Home", "Features", "For Partners"), CTA button ("Sign Up for Updates")
+- Responsive: NavigationMenu (desktop), DropdownMenu or Sheet (mobile)
+
+**Footer.tsx**
+- Copyright notice
+- Links to Privacy Policy and Terms (placeholders)
+- Optional: Social icons
+
+### 7.2. Page: Home (app/page.tsx)
+
+**Hero Section**
+- High visual impact (e.g., HeroParallax, BackgroundGradientAnimation)
+- Text: Headline + sub-headline
+- CTA Button: "Learn More" / "Get Early Access"
+
+**Problem Section**
+- Cards for each pain point: court availability, coordination difficulty, fragmented access
+
+**Solution Section**
+- StickyScrollReveal or timeline: partner with gyms → live view → play
+
+**Features Overview**
+- BentoGrid or Cards for 4 features: Real-Time Occupancy, Game Finding, Easy Day Passes, Player Groups
+
+**Email Sign-Up Section**
+- Headline, email input, submit button, toast feedback
+- Connects to `/api/signup`
+
+### 7.3. Page: Features (app/features/page.tsx)
+
+**Header**
+- Title: "Hooper Features"
+
+**Detailed Features**
+- Real-Time Monitoring
+- Court Discovery
+- Game Finding & Scheduling
+- Groups & Communication
+- Day Pass Integration
+- Optional Profiles
+
+**Future Features Teaser**
+- Marketplace, Skill Matching, League Tools
+
+**CTA Section**
+- Repeat email sign-up
+
+### 7.4. Page: For Partners (app/partners/page.tsx)
+
+**Hero**
+- Headline for gyms/parks: "Increase Utilization, Revenue, and Insights"
+
+**Benefits Section**
+- Cards listing value: foot traffic, analytics, marketing, etc.
+
+**How It Works Section**
+- Numbered timeline: contact → agreement → install → go live
+
+**Partner Interest Form**
+- Fields: Facility Name, Contact Name, Email, Phone (optional), Message
+- Connects to `/api/partner-interest`
+
+---
+
+## 8. API Routes
+
+**/api/signup**
+- Handles POST email signups
+- Logs to console or temp storage
+
+**/api/partner-interest**
+- Handles POST partner form submissions
+- Logs data, returns JSON response
+
+---
+
+## 9. Future Considerations
+
+- CRM/email integration (e.g. Mailchimp)
+- Blog section
+- Full privacy/terms pages
+- Partner logos/testimonials
+- SEO setup (meta tags, OG tags)
+
+---
+
+## 10. Success Metrics
+
+- Number of email sign-ups
+- Partner form submissions
+- Site traffic/bounce rate
+
