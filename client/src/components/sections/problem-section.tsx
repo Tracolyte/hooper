@@ -1,5 +1,7 @@
 import { Clock, Users, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTheme } from "@/lib/ThemeContext";
+import { cn } from "@/lib/utils";
 
 const problems = [
   {
@@ -23,8 +25,13 @@ const problems = [
 ];
 
 export default function ProblemSection() {
+  const { theme } = useTheme();
+  
   return (
-    <section id="problem-section" className="py-20 md:py-28 bg-black">
+    <section id="problem-section" className={cn(
+      "py-20 md:py-28 transition-colors duration-300",
+      theme === 'dark' ? "bg-black" : "bg-white"
+    )}>
       <div className="container mx-auto px-4 md:px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -33,7 +40,10 @@ export default function ProblemSection() {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 relative inline-block">
+          <h2 className={cn(
+            "text-3xl md:text-4xl font-bold mb-6 relative inline-block transition-colors",
+            theme === 'dark' ? "text-white" : "text-gray-900"
+          )}>
             <span className="relative z-10">The Basketball Problem</span>
             <motion.span 
               initial={{ width: "0%" }}
@@ -43,7 +53,10 @@ export default function ProblemSection() {
               className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-hooper-orange to-hooper-brown/50"
             ></motion.span>
           </h2>
-          <p className="text-gray-300 text-lg">
+          <p className={cn(
+            "text-lg transition-colors",
+            theme === 'dark' ? "text-gray-300" : "text-gray-600"
+          )}>
             Finding a place to play shouldn't be this hard. Here's what we're solving:
           </p>
         </motion.div>
@@ -57,7 +70,12 @@ export default function ProblemSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-black/40 p-8 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/10 backdrop-blur-sm"
+              className={cn(
+                "p-8 rounded-xl transition-all duration-300 backdrop-blur-sm",
+                theme === 'dark' 
+                  ? "bg-black/40 hover:bg-white/5 border border-white/10" 
+                  : "bg-black/5 hover:bg-black/10 border border-black/5"
+              )}
             >
               <motion.div 
                 initial={{ scale: 0 }}
@@ -78,8 +96,16 @@ export default function ProblemSection() {
               >
                 {problem.icon}
               </motion.div>
-              <h3 className="text-xl font-bold mb-3">{problem.title}</h3>
-              <p className="text-gray-400">
+              <h3 className={cn(
+                "text-xl font-bold mb-3 transition-colors",
+                theme === 'dark' ? "text-white" : "text-gray-900"
+              )}>
+                {problem.title}
+              </h3>
+              <p className={cn(
+                "transition-colors",
+                theme === 'dark' ? "text-gray-400" : "text-gray-600"
+              )}>
                 {problem.description}
               </p>
             </motion.div>

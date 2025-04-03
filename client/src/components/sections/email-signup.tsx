@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Mail, UserCheck, Building2, ArrowRight, Check } from "lucide-react";
+import { useTheme } from "@/lib/ThemeContext";
+import { cn } from "@/lib/utils";
 
 const emailSignupSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -26,6 +28,7 @@ type EmailSignupFormValues = z.infer<typeof emailSignupSchema>;
 export default function EmailSignup() {
   const { toast } = useToast();
   const [isSuccess, setIsSuccess] = useState(false);
+  const { theme } = useTheme();
   
   const form = useForm<EmailSignupFormValues>({
     resolver: zodResolver(emailSignupSchema),
@@ -66,7 +69,10 @@ export default function EmailSignup() {
   }
 
   return (
-    <section id="email-signup" className="py-20 md:py-32 bg-black relative overflow-hidden">
+    <section id="email-signup" className={cn(
+      "py-20 md:py-32 relative overflow-hidden transition-colors",
+      theme === 'dark' ? "bg-black" : "bg-gray-100"
+    )}>
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-20 right-0 w-[600px] h-[600px] bg-gradient-to-b from-hooper-orange/10 via-hooper-brown/5 to-transparent rounded-full opacity-50 blur-[120px] animate-pulse"></div>
@@ -100,7 +106,10 @@ export default function EmailSignup() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+              className={cn(
+                "text-3xl md:text-4xl lg:text-5xl font-bold mb-6 transition-colors",
+                theme === 'dark' ? "text-white" : "text-gray-900"
+              )}
             >
               Join the Hooper <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Community</span>
             </motion.h2>
@@ -110,7 +119,10 @@ export default function EmailSignup() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="text-lg text-gray-300 mb-8 max-w-xl lg:max-w-none mx-auto lg:mx-0"
+              className={cn(
+                "text-lg mb-8 max-w-xl lg:max-w-none mx-auto lg:mx-0 transition-colors",
+                theme === 'dark' ? "text-gray-300" : "text-gray-600"
+              )}
             >
               Be the first to know when Hooper launches in your area and get exclusive early access to our beta program. No spam, just updates about your basketball community.
             </motion.p>
@@ -127,8 +139,14 @@ export default function EmailSignup() {
                   <Mail className="h-5 w-5 text-hooper-orange" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Launch Notifications</h3>
-                  <p className="text-sm text-gray-400">Be the first to know when we go live in your area</p>
+                  <h3 className={cn(
+                    "font-medium mb-1 transition-colors",
+                    theme === 'dark' ? "text-white" : "text-gray-900"
+                  )}>Launch Notifications</h3>
+                  <p className={cn(
+                    "text-sm transition-colors",
+                    theme === 'dark' ? "text-gray-400" : "text-gray-500"
+                  )}>Be the first to know when we go live in your area</p>
                 </div>
               </div>
               <div className="flex items-start">
@@ -136,8 +154,14 @@ export default function EmailSignup() {
                   <UserCheck className="h-5 w-5 text-hooper-brown" />
                 </div>
                 <div>
-                  <h3 className="font-medium mb-1">Priority Access</h3>
-                  <p className="text-sm text-gray-400">Skip the line when we launch our full platform</p>
+                  <h3 className={cn(
+                    "font-medium mb-1 transition-colors",
+                    theme === 'dark' ? "text-white" : "text-gray-900"
+                  )}>Priority Access</h3>
+                  <p className={cn(
+                    "text-sm transition-colors",
+                    theme === 'dark' ? "text-gray-400" : "text-gray-500"
+                  )}>Skip the line when we launch our full platform</p>
                 </div>
               </div>
             </motion.div>
@@ -155,11 +179,19 @@ export default function EmailSignup() {
               {/* Background glows */}
               <div className="absolute -inset-1 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-3xl blur-lg opacity-30"></div>
               
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-10 shadow-2xl overflow-hidden">
+              <div className={cn(
+                "relative rounded-3xl p-8 md:p-10 shadow-2xl overflow-hidden backdrop-blur-xl",
+                theme === 'dark' 
+                  ? "bg-black/80 border border-white/10" 
+                  : "bg-white/90 border border-gray-200"
+              )}>
                 {/* Success state */}
                 {isSuccess && (
                   <motion.div 
-                    className="absolute inset-0 flex items-center justify-center flex-col bg-black/95 backdrop-blur-sm z-10"
+                    className={cn(
+                      "absolute inset-0 flex items-center justify-center flex-col backdrop-blur-sm z-10",
+                      theme === 'dark' ? "bg-black/95" : "bg-white/95"
+                    )}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
@@ -172,8 +204,14 @@ export default function EmailSignup() {
                     >
                       <Check className="h-10 w-10 text-white" />
                     </motion.div>
-                    <h3 className="text-2xl font-bold mb-2">You're In!</h3>
-                    <p className="text-gray-400 text-center max-w-md">
+                    <h3 className={cn(
+                      "text-2xl font-bold mb-2",
+                      theme === 'dark' ? "text-white" : "text-gray-900"
+                    )}>You're In!</h3>
+                    <p className={cn(
+                      "text-center max-w-md",
+                      theme === 'dark' ? "text-gray-400" : "text-gray-500"
+                    )}>
                       Thank you for joining our waitlist. We'll notify you when Hooper launches in your area.
                     </p>
                   </motion.div>
@@ -182,8 +220,13 @@ export default function EmailSignup() {
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <div className="mb-8">
-                      <h3 className="text-2xl font-bold mb-2">Sign Up for Early Access</h3>
-                      <p className="text-gray-400">
+                      <h3 className={cn(
+                        "text-2xl font-bold mb-2",
+                        theme === 'dark' ? "text-white" : "text-gray-900"
+                      )}>Sign Up for Early Access</h3>
+                      <p className={cn(
+                        theme === 'dark' ? "text-gray-400" : "text-gray-500"
+                      )}>
                         Join thousands of players already on our waitlist
                       </p>
                     </div>
@@ -193,13 +236,21 @@ export default function EmailSignup() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-sm font-medium text-gray-300">Email Address</FormLabel>
+                          <FormLabel className={cn(
+                            "text-sm font-medium",
+                            theme === 'dark' ? "text-gray-300" : "text-gray-700"
+                          )}>Email Address</FormLabel>
                           <FormControl>
                             <div className="relative">
                               <Input
                                 placeholder="you@example.com"
                                 {...field}
-                                className="w-full bg-white/5 border border-white/10 text-white focus:ring-hooper-orange py-6 pl-11 rounded-lg"
+                                className={cn(
+                                  "w-full py-6 pl-11 rounded-lg focus:ring-hooper-orange",
+                                  theme === 'dark' 
+                                    ? "bg-white/5 border-white/10 text-white" 
+                                    : "bg-white border-gray-300 text-gray-900"
+                                )}
                               />
                               <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                             </div>
@@ -219,10 +270,18 @@ export default function EmailSignup() {
                               <Checkbox
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
-                                className="h-5 w-5 text-hooper-orange border-white/20 rounded bg-white/5 data-[state=checked]:bg-hooper-orange"
+                                className={cn(
+                                  "h-5 w-5 text-hooper-orange rounded data-[state=checked]:bg-hooper-orange",
+                                  theme === 'dark' 
+                                    ? "border-white/20 bg-white/5" 
+                                    : "border-gray-300 bg-white"
+                                )}
                               />
                             </FormControl>
-                            <FormLabel className="font-medium text-white text-base">
+                            <FormLabel className={cn(
+                              "font-medium text-base",
+                              theme === 'dark' ? "text-white" : "text-gray-900"
+                            )}>
                               I'm a player looking for courts and games
                             </FormLabel>
                           </FormItem>
@@ -238,10 +297,18 @@ export default function EmailSignup() {
                               <Checkbox
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
-                                className="h-5 w-5 text-hooper-brown border-white/20 rounded bg-white/5 data-[state=checked]:bg-hooper-brown"
+                                className={cn(
+                                  "h-5 w-5 text-hooper-brown rounded data-[state=checked]:bg-hooper-brown",
+                                  theme === 'dark' 
+                                    ? "border-white/20 bg-white/5" 
+                                    : "border-gray-300 bg-white"
+                                )}
                               />
                             </FormControl>
-                            <FormLabel className="font-medium text-white text-base">
+                            <FormLabel className={cn(
+                              "font-medium text-base",
+                              theme === 'dark' ? "text-white" : "text-gray-900"
+                            )}>
                               I run a facility with basketball courts
                             </FormLabel>
                           </FormItem>
