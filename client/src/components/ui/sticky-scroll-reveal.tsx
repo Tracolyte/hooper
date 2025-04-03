@@ -3,7 +3,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/lib/ThemeContext";
 
 interface StickyScrollRevealProps {
   content: {
@@ -26,7 +25,6 @@ export function StickyScrollReveal({
     target: ref,
     offset: ["start start", "end end"],
   });
-  const { theme } = useTheme();
 
   const colors = {
     orange: "bg-hooper-orange",
@@ -73,24 +71,14 @@ export function StickyScrollReveal({
             >
               <div
                 className={cn(
-                  "absolute left-0 top-0 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold text-white",
+                  "absolute left-0 top-0 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold",
                   colors[item.color || "orange"]
                 )}
               >
                 {item.step}
               </div>
-              <h3 className={cn(
-                "text-xl font-bold mb-2 transition-colors",
-                theme === 'dark' ? "text-white" : "text-gray-900"
-              )}>
-                {item.title}
-              </h3>
-              <p className={cn(
-                "transition-colors",
-                theme === 'dark' ? "text-hooper-dark-100" : "text-gray-600"
-              )}>
-                {item.description}
-              </p>
+              <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+              <p className="text-hooper-dark-100">{item.description}</p>
             </div>
           ))}
         </div>
@@ -98,12 +86,7 @@ export function StickyScrollReveal({
         <div className="w-full md:w-[50%] h-[600px] flex items-center justify-center">
           <div className="relative animate-float">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-xl blur opacity-30"></div>
-            <div className={cn(
-              "relative rounded-xl overflow-hidden border",
-              theme === 'dark' 
-                ? "bg-hooper-dark-500 border-hooper-dark-300" 
-                : "bg-white border-gray-200"
-            )}>
+            <div className="relative bg-hooper-dark-500 rounded-xl overflow-hidden border border-hooper-dark-300">
               <img
                 src="https://images.unsplash.com/photo-1504450758481-7338eba7524a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
                 alt="Basketball player dunking"
@@ -140,19 +123,13 @@ export function StickyScrollReveal({
                   <span>2.3 miles away</span>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className={cn(
-                    "p-3 rounded-lg",
-                    theme === 'dark' ? "bg-hooper-dark-400" : "bg-black/20"
-                  )}>
+                  <div className="bg-hooper-dark-400 p-3 rounded-lg">
                     <div className="text-sm text-hooper-dark-100">Courts Open</div>
-                    <div className="text-xl font-bold text-white">3/4</div>
+                    <div className="text-xl font-bold">3/4</div>
                   </div>
-                  <div className={cn(
-                    "p-3 rounded-lg",
-                    theme === 'dark' ? "bg-hooper-dark-400" : "bg-black/20"
-                  )}>
+                  <div className="bg-hooper-dark-400 p-3 rounded-lg">
                     <div className="text-sm text-hooper-dark-100">Players</div>
-                    <div className="text-xl font-bold text-white">12</div>
+                    <div className="text-xl font-bold">12</div>
                   </div>
                 </div>
               </div>

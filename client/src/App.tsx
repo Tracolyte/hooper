@@ -1,28 +1,17 @@
 import { Switch, Route } from "wouter";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
+import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Features from "@/pages/features";
 import Partners from "@/pages/partners";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { useTheme } from "./lib/ThemeContext";
-import { useEffect } from "react";
-import { cn } from "./lib/utils";
 
-function App() {
-  const { theme } = useTheme();
-  
-  useEffect(() => {
-    // Apply theme class to document body
-    document.body.classList.remove('light-mode', 'dark-mode');
-    document.body.classList.add(`${theme}-mode`);
-  }, [theme]);
-
+function Router() {
   return (
-    <div className={cn(
-      "min-h-screen flex flex-col transition-colors duration-300",
-      theme === 'dark' ? "bg-black" : "bg-white"
-    )}>
+    <div className="min-h-screen flex flex-col bg-black">
       <Header />
       <main className="flex-grow">
         <Switch>
@@ -34,6 +23,15 @@ function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Router />
+      <Toaster />
+    </QueryClientProvider>
   );
 }
 

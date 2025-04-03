@@ -1,7 +1,5 @@
 import { StickyScrollReveal } from "@/components/ui/sticky-scroll-reveal";
 import { motion } from "framer-motion";
-import { useTheme } from "@/lib/ThemeContext";
-import { cn } from "@/lib/utils";
 
 const solutionSteps = [
   {
@@ -31,13 +29,8 @@ const solutionSteps = [
 ];
 
 export default function SolutionSection() {
-  const { theme } = useTheme();
-
   return (
-    <section className={cn(
-      "py-20 md:py-28 transition-colors duration-300",
-      theme === 'dark' ? "bg-black" : "bg-white"
-    )}>
+    <section className="py-20 md:py-28 bg-black">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -46,10 +39,7 @@ export default function SolutionSection() {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-          <h2 className={cn(
-            "text-3xl md:text-4xl font-bold mb-6 relative inline-block transition-colors",
-            theme === 'dark' ? "text-white" : "text-gray-900"
-          )}>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 relative inline-block">
             <span className="relative z-10">How Hooper Works</span>
             <motion.span 
               initial={{ width: "0%" }}
@@ -59,10 +49,7 @@ export default function SolutionSection() {
               className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-hooper-orange to-hooper-brown/50"
             ></motion.span>
           </h2>
-          <p className={cn(
-            "text-lg transition-colors",
-            theme === 'dark' ? "text-gray-300" : "text-gray-600"
-          )}>
+          <p className="text-gray-300 text-lg">
             Real-time data meets basketball community in one seamless experience.
           </p>
         </motion.div>
