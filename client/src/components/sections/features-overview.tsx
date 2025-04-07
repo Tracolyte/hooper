@@ -1,7 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Shield, Users, CreditCard, MessageSquare, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"; // Assuming you have this utility function
+import { GlowingEffect } from "@/components/ui/glowing-effect"; // Assuming this component exists
+
 
 const features = [
   {
@@ -60,9 +62,9 @@ export default function FeaturesOverview() {
       {/* Background elements */}
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-hooper-orange/10 to-transparent rounded-full blur-[120px] transform translate-x-1/2 -translate-y-1/2"></div>
       <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-hooper-brown/10 to-transparent rounded-full blur-[120px] transform -translate-x-1/2 translate-y-1/2"></div>
-      
+
       <div className="container relative z-10 mx-auto px-4 md:px-6">
-        <motion.div 
+        <motion.div
           className="max-w-3xl mx-auto text-center mb-16 md:mb-24"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -79,24 +81,32 @@ export default function FeaturesOverview() {
             Find games, meet players, and never miss court time with our comprehensive set of features.
           </p>
         </motion.div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
           {features.map((feature, index) => (
-            <FeatureCard 
+            <FeatureCard
               key={index}
               feature={feature}
               index={index}
             />
           ))}
         </div>
-        
-        <motion.div 
-          className="mt-20 p-6 md:p-10 rounded-3xl bg-gradient-to-br from-black via-black to-hooper-dark-500 border border-white/5 shadow-xl"
+
+        <motion.div
+          className="mt-20 p-6 md:p-10 rounded-3xl bg-gradient-to-br from-black via-black to-hooper-dark-500 border border-white/5 shadow-xl relative"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
+          {/* Apply GlowingEffect to the bottom card as well */}
+          <GlowingEffect
+            spread={40}
+            glow={true}
+            disabled={false}
+            proximity={64}
+            inactiveZone={0.01}
+          />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <div className="md:col-span-2">
               <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to elevate your basketball experience?</h3>
@@ -104,7 +114,7 @@ export default function FeaturesOverview() {
                 Join thousands of players already using Hooper to find courts and games near them.
               </p>
               <div className="flex flex-wrap gap-4">
-                <button 
+                <button
                   className="bg-gradient-to-r from-hooper-orange to-hooper-brown text-white font-medium px-8 py-3 rounded-full hover:opacity-90 transition-all"
                   onClick={() => {
                     const emailSignupSection = document.querySelector("#email-signup");
@@ -115,7 +125,7 @@ export default function FeaturesOverview() {
                 >
                   Get Early Access
                 </button>
-                <button 
+                <button
                   className="bg-white/5 border border-white/10 text-white font-medium px-8 py-3 rounded-full hover:bg-white/10 transition-all"
                   onClick={() => {
                     const partnersSection = document.querySelector("#partners");
@@ -136,8 +146,8 @@ export default function FeaturesOverview() {
                     <circle cx="50" cy="50" r="45" fill="none" stroke="url(#grad1)" strokeWidth="3" strokeDasharray="283" strokeDashoffset="100" />
                     <defs>
                       <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ff6b00" />
-                        <stop offset="100%" stopColor="#8b4513" />
+                        <stop offset="0%" stopColor="#ff6b00" /> {/* Assuming hooper-orange */}
+                        <stop offset="100%" stopColor="#8b4513" /> {/* Assuming hooper-brown */}
                       </linearGradient>
                     </defs>
                   </svg>
@@ -169,60 +179,76 @@ interface FeatureCardProps {
 
 function FeatureCard({ feature, index }: FeatureCardProps) {
   const { title, icon: Icon, description, color, image, features } = feature;
-  const isEven = index % 2 === 0;
-  
+
   return (
-    <motion.div 
-      className="group relative rounded-3xl overflow-hidden bg-hooper-dark-500/90 backdrop-blur-sm border border-white/5 shadow-xl transition-all hover:shadow-2xl"
+    <motion.div
+      // *** REMOVED overflow-hidden from the root element ***
+      className="group relative rounded-3xl bg-hooper-dark-500/90 backdrop-blur-sm border border-white/5 shadow-xl transition-all hover:shadow-2xl"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: 0.1 * index }}
     >
-      <div className="absolute inset-0 overflow-hidden">
-        <div 
+      {/* *** ADDED overflow-hidden AND rounded-3xl HERE ***
+          This div now clips the background image to the card's shape */}
+      <div className="absolute inset-0 overflow-hidden rounded-3xl">
+        <div
           className="absolute inset-0 opacity-20 bg-cover bg-center transition-all duration-1000 group-hover:scale-110 group-hover:opacity-30"
           style={{ backgroundImage: `url(${image})` }}
         />
+        {/* Gradient overlay remains inside the clipping container */}
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
       </div>
 
-      <div className="relative z-10 p-6 md:p-8 h-full flex flex-col">
+      {/* Content remains relative with higher z-index */}
+      <div className="relative z-20 p-6 md:p-8 h-full flex flex-col">
         <div className={cn(
           "w-12 h-12 rounded-full mb-6 flex items-center justify-center",
-          color === "orange" 
-            ? "bg-gradient-to-br from-hooper-orange to-hooper-orange/60" 
+          color === "orange"
+            ? "bg-gradient-to-br from-hooper-orange to-hooper-orange/60"
             : "bg-gradient-to-br from-hooper-brown to-hooper-brown/60"
         )}>
           <Icon className="h-6 w-6 text-white" />
         </div>
-        
+
         <h3 className="text-2xl font-bold mb-3 group-hover:text-hooper-orange transition-colors">{title}</h3>
         <p className="text-gray-300 mb-8">{description}</p>
-        
+
         <div className="mt-auto">
           <h4 className="text-sm uppercase tracking-wider text-gray-400 mb-4">Key Benefits</h4>
           <ul className="space-y-3">
             {features.map((feature, i) => (
-              <motion.li 
-                key={i} 
+              <motion.li
+                key={i}
                 className="flex items-start"
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, delay: 0.4 + (i * 0.1) }}
               >
-                <CheckCircle2 
+                <CheckCircle2
                   className={cn(
                     "h-5 w-5 mr-2 mt-0.5 flex-shrink-0",
                     color === "orange" ? "text-hooper-orange" : "text-hooper-brown"
-                  )} 
+                  )}
                 />
                 <span className="text-gray-200">{feature}</span>
               </motion.li>
             ))}
           </ul>
         </div>
+      </div>
+
+      {/* GlowingEffect is positioned absolutely, below content (z-10) but above background.
+          Since the PARENT motion.div no longer has overflow-hidden, the glow effect can render outside its bounds. */}
+      <div className="absolute inset-0 z-10 rounded-3xl pointer-events-none">
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          proximity={64}
+          inactiveZone={0.01}
+        />
       </div>
     </motion.div>
   );

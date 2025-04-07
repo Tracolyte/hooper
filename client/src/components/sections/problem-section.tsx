@@ -1,5 +1,6 @@
 import { Clock, Users, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const problems = [
   {
@@ -16,7 +17,7 @@ const problems = [
   },
   {
     icon: <CreditCard className="h-6 w-6 text-hooper-orange" />,
-    title: "Fragmented Access",
+    title: "Streamlined Access",
     description: "Different payment systems for each gym. Membership barriers when you just want to play a single game.",
     gradient: "orange",
   },
@@ -34,7 +35,7 @@ export default function ProblemSection() {
           className="max-w-3xl mx-auto text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 relative inline-block">
-            <span className="relative z-10">Hooper Makes it Easy</span>
+            <span className="relative z-10">We Make it Easy</span>
             <motion.span 
               initial={{ width: "0%" }}
               whileInView={{ width: "100%" }}
@@ -44,7 +45,7 @@ export default function ProblemSection() {
             ></motion.span>
           </h2>
           <p className="text-gray-300 text-lg">
-            Finding a place to play shouldn't be this hard. Here's what we're solving:
+            Finding courts shouldn't be hard. Here's how we help:
           </p>
         </motion.div>
         
@@ -57,8 +58,15 @@ export default function ProblemSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-black/40 p-8 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/10 backdrop-blur-sm"
+              className="bg-black/40 p-8 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/10 backdrop-blur-sm relative"
             >
+              <GlowingEffect
+                spread={40}
+                glow={true}
+                disabled={false}
+                proximity={64}
+                inactiveZone={0.01}
+              />
               <motion.div 
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}

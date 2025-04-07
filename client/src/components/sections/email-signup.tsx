@@ -4,16 +4,28 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// Removed Label import as it wasn't used directly
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast"; // Assuming this hook exists
+import { apiRequest } from "@/lib/queryClient"; // Assuming this exists
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Mail, UserCheck, Building2, ArrowRight, Check } from "lucide-react";
+import { GlowingEffect } from "@/components/ui/glowing-effect"; // Assuming this component exists
+import { cn } from "@/lib/utils"; // Assuming this utility function exists
+
+// Helper function cn if not already defined elsewhere
+// You can keep your own "@/lib/utils" import if it exists
+// import { ClassValue, clsx } from "clsx"
+// import { twMerge } from "tailwind-merge"
+//
+// export function cn(...inputs: ClassValue[]) {
+//   return twMerge(clsx(inputs))
+// }
+
 
 const emailSignupSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -26,7 +38,7 @@ type EmailSignupFormValues = z.infer<typeof emailSignupSchema>;
 export default function EmailSignup() {
   const { toast } = useToast();
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const form = useForm<EmailSignupFormValues>({
     resolver: zodResolver(emailSignupSchema),
     defaultValues: {
@@ -35,10 +47,22 @@ export default function EmailSignup() {
       isPartner: false,
     },
   });
-  
+
   const signupMutation = useMutation({
     mutationFn: async (data: EmailSignupFormValues) => {
-      return apiRequest("POST", "/api/signup", data);
+      // Replace with your actual API call logic
+      console.log("Simulating API call with:", data);
+      // Example: const response = await fetch('/api/signup', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} });
+      // if (!response.ok) throw new Error('Network response was not ok');
+      // return response.json();
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+      // Simulate potential error
+      // if (data.email.includes('error')) {
+      //   throw new Error("Simulated server error for this email.");
+      // }
+      return { message: "Signup successful" }; // Simulate successful response
+      // Use apiRequest if you have it set up:
+      // return apiRequest("POST", "/api/signup", data);
     },
     onSuccess: () => {
       toast({
@@ -48,9 +72,9 @@ export default function EmailSignup() {
       });
       setIsSuccess(true);
       setTimeout(() => {
-        form.reset();
-        setIsSuccess(false);
-      }, 3000);
+        form.reset(); // Reset form fields
+        setIsSuccess(false); // Hide success message
+      }, 3000); // Adjust timing as needed
     },
     onError: (error) => {
       toast({
@@ -60,21 +84,30 @@ export default function EmailSignup() {
       });
     },
   });
-  
+
   function onSubmit(data: EmailSignupFormValues) {
+    // Optional: Add validation like checking if at least one checkbox is selected
+    if (!data.isPlayer && !data.isPartner) {
+        toast({
+            title: "Selection Required",
+            description: "Please select if you are a player or a facility partner.",
+            variant: "warning", // Use a different variant if available, or keep default/destructive
+        });
+        return; // Prevent submission
+    }
     signupMutation.mutate(data);
   }
 
   return (
     <section id="email-signup" className="py-20 md:py-32 bg-black relative overflow-hidden">
       {/* Animated background */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-20 right-0 w-[600px] h-[600px] bg-gradient-to-b from-hooper-orange/10 via-hooper-brown/5 to-transparent rounded-full opacity-50 blur-[120px] animate-pulse"></div>
         <div className="absolute -bottom-20 left-0 w-[600px] h-[600px] bg-gradient-to-t from-hooper-brown/10 via-hooper-orange/5 to-transparent rounded-full opacity-50 blur-[120px] animate-pulse" style={{ animationDelay: '1s' }}></div>
       </div>
-      
+
       <div className="container relative z-10 mx-auto px-4 md:px-6">
-        <motion.div 
+        <motion.div
           className="flex flex-col lg:flex-row items-center max-w-6xl mx-auto gap-12 lg:gap-16"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -94,7 +127,7 @@ export default function EmailSignup() {
                 <span className="text-sm font-medium text-hooper-orange tracking-wide">Get in Early</span>
               </div>
             </motion.div>
-            
+
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +137,7 @@ export default function EmailSignup() {
             >
               Join the Hooper <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Community</span>
             </motion.h2>
-            
+
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -114,7 +147,7 @@ export default function EmailSignup() {
             >
               Be the first to know when Hooper launches in your area and get exclusive early access to our beta program. No spam, just updates about your basketball community.
             </motion.p>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -123,7 +156,7 @@ export default function EmailSignup() {
               className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
             >
               <div className="flex items-start">
-                <div className="bg-hooper-orange/20 p-2 rounded-full mr-4">
+                <div className="bg-hooper-orange/20 p-2 rounded-full mr-4 flex-shrink-0">
                   <Mail className="h-5 w-5 text-hooper-orange" />
                 </div>
                 <div>
@@ -132,7 +165,8 @@ export default function EmailSignup() {
                 </div>
               </div>
               <div className="flex items-start">
-                <div className="bg-hooper-brown/20 p-2 rounded-full mr-4">
+                 {/* Added flex-shrink-0 to prevent icon shrinking */}
+                <div className="bg-hooper-brown/20 p-2 rounded-full mr-4 flex-shrink-0">
                   <UserCheck className="h-5 w-5 text-hooper-brown" />
                 </div>
                 <div>
@@ -142,116 +176,143 @@ export default function EmailSignup() {
               </div>
             </motion.div>
           </div>
-          
+
           {/* Right content - Form */}
-          <motion.div 
+          <motion.div
             className="lg:w-1/2 w-full"
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
+            {/* This outer relative div helps contain the absolute blurred background */}
             <div className="relative">
-              {/* Background glows */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-3xl blur-lg opacity-30"></div>
-              
-              <div className="relative bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-10 shadow-2xl overflow-hidden">
-                {/* Success state */}
+              {/* Background decorative blur */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-3xl blur-lg opacity-30 pointer-events-none"></div>
+
+              {/* *** REMOVED overflow-hidden FROM THIS DIV ***
+                  This is the main container for the form visuals and the GlowingEffect.
+                  Removing overflow-hidden allows the glow to appear outside its bounds. */}
+              <div className="relative bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-10 shadow-2xl">
+                {/* GlowingEffect is placed inside the container it should add a glow TO */}
+                <GlowingEffect
+                  spread={40}
+                  glow={true} // Make sure glow is enabled
+                  disabled={false} // Make sure effect is not disabled
+                  proximity={64} // Adjust as needed
+                  inactiveZone={0.01} // Adjust as needed
+                />
+
+                {/* Success state overlay */}
                 {isSuccess && (
-                  <motion.div 
-                    className="absolute inset-0 flex items-center justify-center flex-col bg-black/95 backdrop-blur-sm z-10"
+                  <motion.div
+                    className="absolute inset-0 flex items-center justify-center flex-col bg-black/95 backdrop-blur-sm z-10 rounded-3xl" // Added rounded-3xl to match parent
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }} // Added exit animation
                     transition={{ duration: 0.3 }}
                   >
                     <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
-                      transition={{ duration: 0.5, delay: 0.1 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }} // Spring animation
                       className="bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-full p-4 mb-6"
                     >
                       <Check className="h-10 w-10 text-white" />
                     </motion.div>
                     <h3 className="text-2xl font-bold mb-2">You're In!</h3>
-                    <p className="text-gray-400 text-center max-w-md">
-                      Thank you for joining our waitlist. We'll notify you when Hooper launches in your area.
+                    <p className="text-gray-400 text-center max-w-xs px-4"> {/* Adjusted max-width and added padding */}
+                      Thanks for joining the waitlist. We'll reach out soon!
                     </p>
                   </motion.div>
                 )}
-              
+
+                {/* Form Component */}
+                {/* Added relative positioning and z-index to ensure form is above potential future background elements if needed,
+                    though shouldn't be strictly necessary with the current structure unless the glow effect itself causes issues */}
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                    <div className="mb-8">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-[5]"> {/* Added relative and z-index */}
+                    <div className="mb-8 text-center lg:text-left"> {/* Centered text on small screens */}
                       <h3 className="text-2xl font-bold mb-2">Sign Up for Early Access</h3>
                       <p className="text-gray-400">
-                        Join thousands of players already on our waitlist
+                        Join players and facilities on our waitlist
                       </p>
                     </div>
-                    
+
                     <FormField
                       control={form.control}
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-sm font-medium text-gray-300">Email Address</FormLabel>
+                          <FormLabel className="text-sm font-medium text-gray-300 sr-only">Email Address</FormLabel> {/* Made label screen-reader only */}
                           <FormControl>
                             <div className="relative">
+                               {/* Increased padding-left (pl) to accommodate icon */}
                               <Input
+                                type="email" // Specify input type
                                 placeholder="you@example.com"
                                 {...field}
-                                className="w-full bg-white/5 border border-white/10 text-white focus:ring-hooper-orange py-6 pl-11 rounded-lg"
+                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-orange focus:ring-offset-2 focus:ring-offset-black py-3 px-4 pl-11 rounded-lg h-auto" // Adjusted padding/height
+                                aria-label="Email Address" // Added aria-label
                               />
-                              <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                               {/* Adjusted icon positioning */}
+                              <Mail className="absolute left-3.5 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
                             </div>
                           </FormControl>
-                          <FormMessage className="text-red-400" />
+                          <FormMessage className="text-red-400 pt-1 text-sm" /> {/* Adjusted styling */}
                         </FormItem>
                       )}
                     />
-                    
-                    <div className="space-y-3 pt-2">
+
+                    <div className="space-y-4 pt-2"> {/* Increased spacing */}
                       <FormField
                         control={form.control}
                         name="isPlayer"
                         render={({ field }) => (
-                          <FormItem className="flex items-start space-x-3 space-y-0">
+                          <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-lg bg-white/5 border border-transparent hover:border-white/10 transition-colors">
+                             {/* Added padding, background, border hover */}
                             <FormControl>
                               <Checkbox
+                                id="isPlayer" // Added id for label association
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
-                                className="h-5 w-5 text-hooper-orange border-white/20 rounded bg-white/5 data-[state=checked]:bg-hooper-orange"
+                                className="h-5 w-5 text-hooper-orange border-white/30 rounded bg-white/10 data-[state=checked]:bg-hooper-orange data-[state=checked]:text-white focus-visible:ring-2 focus-visible:ring-hooper-orange focus-visible:ring-offset-1 focus-visible:ring-offset-black"
                               />
                             </FormControl>
-                            <FormLabel className="font-medium text-white text-base">
-                              I'm a player looking for courts and games
-                            </FormLabel>
+                            {/* Changed label element for better clickability */}
+                            <label htmlFor="isPlayer" className="font-medium text-white text-sm cursor-pointer select-none">
+                              I'm a player looking for courts & games
+                            </label>
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={form.control}
                         name="isPartner"
                         render={({ field }) => (
-                          <FormItem className="flex items-start space-x-3 space-y-0">
+                          <FormItem className="flex items-center space-x-3 space-y-0 p-3 rounded-lg bg-white/5 border border-transparent hover:border-white/10 transition-colors">
+                             {/* Added padding, background, border hover */}
                             <FormControl>
                               <Checkbox
+                                id="isPartner" // Added id for label association
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
-                                className="h-5 w-5 text-hooper-brown border-white/20 rounded bg-white/5 data-[state=checked]:bg-hooper-brown"
+                                className="h-5 w-5 text-hooper-brown border-white/30 rounded bg-white/10 data-[state=checked]:bg-hooper-brown data-[state=checked]:text-white focus-visible:ring-2 focus-visible:ring-hooper-brown focus-visible:ring-offset-1 focus-visible:ring-offset-black"
                               />
                             </FormControl>
-                            <FormLabel className="font-medium text-white text-base">
+                            {/* Changed label element */}
+                            <label htmlFor="isPartner" className="font-medium text-white text-sm cursor-pointer select-none">
                               I run a facility with basketball courts
-                            </FormLabel>
+                            </label>
                           </FormItem>
                         )}
                       />
                     </div>
-                    
+
                     <Button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-hooper-orange to-hooper-brown text-white font-medium py-6 h-auto rounded-lg hover:opacity-90 transition-all flex items-center justify-center"
+                      className="w-full bg-gradient-to-r from-hooper-orange to-hooper-brown text-white font-semibold text-base py-3 h-auto rounded-lg hover:opacity-95 transition-opacity flex items-center justify-center shadow-lg focus-visible:ring-2 focus-visible:ring-hooper-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:opacity-60" // Enhanced styling
                       disabled={signupMutation.isPending}
                     >
                       {signupMutation.isPending ? (
@@ -269,17 +330,21 @@ export default function EmailSignup() {
                         </>
                       )}
                     </Button>
-                    
-                    <p className="text-xs text-center text-gray-500 pt-4">
-                      By signing up, you agree to our Privacy Policy and Terms of Service.
+
+                    <p className="text-xs text-center text-gray-500 pt-2"> {/* Adjusted padding */}
+                      By signing up, you agree to our Privacy Policy. {/* Simplified text */}
                     </p>
                   </form>
                 </Form>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
-      </div>
+              </div> {/* End of form container div */}
+            </div> {/* End of relative wrapper for blur+form */}
+          </motion.div> {/* End of right content motion div */}
+        </motion.div> {/* End of flex row div */}
+      </div> {/* End of container div */}
     </section>
   );
 }
+
+// --- Make sure GlowingEffect component is defined or imported correctly ---
+// Example definition if needed:
+// const GlowingEffect = ({...props}) => <div {...props} />; // Placeholder

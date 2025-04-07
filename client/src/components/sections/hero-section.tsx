@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Users, MapPin, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 export default function HeroSection() {
   const isMobile = useIsMobile();
@@ -132,10 +133,17 @@ export default function HeroSection() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 + stat.delay, duration: 0.5 }}
                     className={cn(
-                      "flex flex-col items-center rounded-xl bg-white/5 p-3 sm:p-4 backdrop-blur-sm border border-white/5",
+                      "flex flex-col items-center rounded-xl bg-white/5 p-3 sm:p-4 backdrop-blur-sm border border-white/5 relative",
                       index === 2 && isMobile && "col-span-2 mx-auto w-full max-w-[250px]"
                     )}
                   >
+                    <GlowingEffect
+                      spread={40}
+                      glow={true}
+                      disabled={false}
+                      proximity={64}
+                      inactiveZone={0.01}
+                    />
                     <div className="mb-1 rounded-full bg-black/20 p-1.5 sm:p-2">
                       {stat.icon}
                     </div>
