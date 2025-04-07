@@ -34,7 +34,7 @@ export default function ProblemSection() {
           className="max-w-3xl mx-auto text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 relative inline-block">
-            <span className="relative z-10">The Basketball Problem</span>
+            <span className="relative z-10">Hooper Makes it Easy</span>
             <motion.span 
               initial={{ width: "0%" }}
               whileInView={{ width: "100%" }}

@@ -92,7 +92,7 @@ export default function HeroSection() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="text-base md:text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl"
             >
-              Hooper connects you to available courts and pickup games nearby.
+              
               Real-time occupancy data, easy day passes, and player networking in one app.
             </motion.p>
 
