@@ -5,20 +5,20 @@ import { GlowingEffect } from "@/components/ui/glowing-effect";
 const problems = [
   {
     icon: <Clock className="h-6 w-6 text-hooper-orange" />,
-    title: "Court Availability",
-    description: "Wasting time traveling to courts only to find them full or closed. No way to know occupancy before arriving.",
+    title: "Courts",
+    description: "Stop wasting time traveling to courts to find them full or closed. With Hooper, you'll see the runs before you get there.",
     gradient: "orange",
   },
   {
     icon: <Users className="h-6 w-6 text-hooper-brown" />,
-    title: "Coordination Difficulty",
-    description: "Group chats failing to organize players. No reliable way to find and join pickup games with the right skill level.",
+    title: "Coordination",
+    description: "Get all your friends on one court fast. With Hooper, you'll never need group chats again.",
     gradient: "brown",
   },
   {
     icon: <CreditCard className="h-6 w-6 text-hooper-orange" />,
-    title: "Streamlined Access",
-    description: "Different payment systems for each gym. Membership barriers when you just want to play a single game.",
+    title: "Access",
+    description: "Hoop anywhere, anytime. With Hooper, you can get a daypass in seconds.",
     gradient: "orange",
   },
 ];

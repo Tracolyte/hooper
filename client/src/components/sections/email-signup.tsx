@@ -135,7 +135,7 @@ export default function EmailSignup() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
             >
-              Join the Hooper <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Community</span>
+              Join the <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">Hooper</span> Community
             </motion.h2>
 
             <motion.p

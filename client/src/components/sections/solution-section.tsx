@@ -40,7 +40,7 @@ export default function SolutionSection() {
           className="max-w-3xl mx-auto text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6 relative inline-block">
-            <span className="relative z-10">How Hooper Works</span>
+            <span className="relative z-10">How <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">Hooper</span> Works</span>
             <motion.span 
               initial={{ width: "0%" }}
               whileInView={{ width: "100%" }}

@@ -75,7 +75,7 @@ export default function FeaturesOverview() {
             <span className="text-sm font-medium tracking-wide text-hooper-orange">Feature-Packed</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Everything You Need for <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Basketball</span>
+            Everything You Need to <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">Hoop</span>
           </h2>
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
             Find games, meet players, and never miss court time with our comprehensive set of features.
@@ -109,7 +109,7 @@ export default function FeaturesOverview() {
           />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
             <div className="md:col-span-2">
-              <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to elevate your basketball experience?</h3>
+              <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">elevate</span> your game?</h3>
               <p className="text-gray-300 mb-6">
                 Join thousands of players already using Hooper to find courts and games near them.
               </p>
