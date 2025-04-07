@@ -91,7 +91,7 @@ export default function EmailSignup() {
         toast({
             title: "Selection Required",
             description: "Please select if you are a player or a facility partner.",
-            variant: "warning", // Use a different variant if available, or keep default/destructive
+            variant: "default",
         });
         return; // Prevent submission
     }
