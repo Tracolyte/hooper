@@ -4,19 +4,19 @@ import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 const problems = [
   {
-    icon: <Clock className="h-6 w-6 text-hooper-orange" />,
+    icon: <Clock className="h-6 w-6 text-white" />,
     title: "Courts",
     description: "Stop wasting time traveling to courts to find them full or closed. With Hooper, you'll see the runs before you get there.",
     gradient: "orange",
   },
   {
-    icon: <Users className="h-6 w-6 text-hooper-brown" />,
+    icon: <Users className="h-6 w-6 text-white" />,
     title: "Coordination",
     description: "Get all your friends on one court fast. With Hooper, you'll never need group chats again.",
     gradient: "brown",
   },
   {
-    icon: <CreditCard className="h-6 w-6 text-hooper-orange" />,
+    icon: <CreditCard className="h-6 w-6 text-white" />,
     title: "Access",
     description: "Hoop anywhere, anytime. With Hooper, you can get a daypass in seconds.",
     gradient: "orange",
