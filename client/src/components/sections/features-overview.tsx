@@ -125,17 +125,27 @@ export default function FeaturesOverview() {
                 >
                   Get Early Access
                 </button>
-                <button
-                  className="bg-white/5 border border-white/10 text-white font-medium px-8 py-3 rounded-full hover:bg-white/10 transition-all"
-                  onClick={() => {
-                    const partnersSection = document.querySelector("#partners");
-                    if (partnersSection) {
-                      partnersSection.scrollIntoView({ behavior: "smooth" });
-                    }
-                  }}
-                >
-                  Facility Partner?
-                </button>
+                <div className="relative inline-flex">
+                  <GlowingEffect
+                    spread={40}
+                    glow={true}
+                    disabled={false}
+                    proximity={64}
+                    inactiveZone={0.01}
+                    className="rounded-full pointer-events-none"
+                  />
+                  <button
+                    className="relative z-10 bg-white/5 border border-white/10 text-white font-medium px-8 py-3 rounded-full hover:bg-white/10 transition-all"
+                    onClick={() => {
+                      const partnersSection = document.querySelector("#partners");
+                      if (partnersSection) {
+                        partnersSection.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                  >
+                    Facility Partner?
+                  </button>
+                </div>
               </div>
             </div>
             <div className="flex justify-center md:justify-end">

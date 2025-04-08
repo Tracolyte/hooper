@@ -110,13 +110,23 @@ export default function HeroSection() {
                 Get Early Access
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button
-                onClick={handleLearnMoreClick}
-                variant="outline"
-                className="bg-white/5 text-white border-white/10 px-6 sm:px-8 py-2.5 sm:py-3 h-auto rounded-full font-semibold hover:bg-white/10 transition-all backdrop-blur-sm"
-              >
-                Learn More
-              </Button>
+              <div className="relative inline-flex">
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  className="rounded-full pointer-events-none"
+                />
+                <Button
+                  onClick={handleLearnMoreClick}
+                  variant="outline"
+                  className="relative z-10 bg-white/5 text-white border-white/10 px-6 sm:px-8 py-2.5 sm:py-3 h-auto rounded-full font-semibold hover:bg-white/10 transition-all backdrop-blur-sm"
+                >
+                  Learn More
+                </Button>
+              </div>
             </motion.div>
 
             <motion.div

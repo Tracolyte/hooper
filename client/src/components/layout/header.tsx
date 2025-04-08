@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Menu, X, ChevronRight, Circle } from "lucide-react";
 import { useLocation } from "wouter";
+import { GlowingEffect } from "@/components/ui/glowing-effect";
 
 export default function Header() {
   const [location] = useLocation();
@@ -141,9 +142,18 @@ export default function Header() {
               initial="hidden"
               animate="visible"
               variants={buttonVariants}
+              className="relative"
             >
+              <GlowingEffect
+                spread={40}
+                glow={true}
+                disabled={false}
+                proximity={64}
+                inactiveZone={0.01}
+                className="rounded-full pointer-events-none"
+              />
               <Button 
-                className="bg-white/10 border border-white/10 hover:bg-white/20 text-white font-medium px-5 py-2 h-auto rounded-full backdrop-blur-sm"
+                className="relative z-10 bg-white/10 border border-white/10 hover:bg-white/20 text-white font-medium px-5 py-2 h-auto rounded-full backdrop-blur-sm"
                 onClick={() => {
                   const emailSignupSection = document.getElementById("email-signup");
                   if (emailSignupSection) {
