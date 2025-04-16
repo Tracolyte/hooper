@@ -13,7 +13,7 @@ export default function Footer() {
                 <Circle className="h-4 w-4 text-white fill-white" />
               </div>
               <div className="text-xl font-bold tracking-tighter">
-                <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">HOOPER</span>
+                <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">HOOPER</span>
               </div>
             </div>
             <p className="text-gray-400 text-sm mb-6 max-w-xs">

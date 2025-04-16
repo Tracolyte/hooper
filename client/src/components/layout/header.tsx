@@ -101,7 +101,7 @@ export default function Header() {
                   <Circle className="h-5 w-5 text-white fill-white" />
                 </div>
                 <div className="text-2xl font-black tracking-tighter">
-                  <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">HOOPER</span>
+                  <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">HOOPER</span>
                 </div>
               </a>
             </Link>

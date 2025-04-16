@@ -83,7 +83,7 @@ export default function HeroSection() {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6"
             >
-              Find <span className="bg-gradient-to-r from-hooper-orange to-hooper-brown bg-clip-text text-transparent">Basketball Courts</span> 
+              Find <span className="bg-gradient-to-r from-hooper-orange via-orange-500 to-orange-600 bg-clip-text text-transparent">Basketball Courts</span> 
               <br className="hidden xs:inline" /> & Games in Real-Time
             </motion.h1>
 
