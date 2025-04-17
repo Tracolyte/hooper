@@ -1,4 +1,5 @@
 // src/components/sections/hero-section.tsx
+import React from 'react'; // <--- Import React
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -6,7 +7,16 @@ import { ArrowRight, Users, MapPin, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
-import DisintegratingImage from "@/components/ui/disintegrating-image"; // Import the updated component
+import DisintegratingImage from "@/components/ui/disintegrating-image";
+
+// +++ Define an interface for the structure of each stat item +++
+interface StatItem {
+  icon: React.ReactNode; // Use React.ReactNode for JSX elements
+  value: string;
+  label: string;
+  delay: number;
+}
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 export default function HeroSection() {
   const isMobile = useIsMobile();
@@ -21,7 +31,8 @@ export default function HeroSection() {
     emailSignupSection?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const stats = [
+  // +++ Apply the interface to the stats array declaration +++
+  const stats: StatItem[] = [
     {
       icon: <Users className="w-5 h-5 text-hooper-orange" />,
       value: "20M+",
@@ -41,9 +52,9 @@ export default function HeroSection() {
       delay: 0.3,
     },
   ];
+  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   return (
-    // Add overflow-hidden here to eventually clip particles at the section edge
     <section className="relative bg-black pt-24 pb-16 sm:pt-32 sm:pb-20 md:py-32 overflow-hidden">
       {/* Background Gradient */}
       <BackgroundGradientAnimation
@@ -61,27 +72,27 @@ export default function HeroSection() {
       />
 
       {/* Disintegrating Image Container */}
-      {/*  - NO overflow-hidden
-           - Fixed width defines initial visual area
-           - justify-start aligns the (now wider) canvas visually to the left edge
-      */}
       <div className="absolute inset-y-0 left-0 z-[1] w-72 xs:w-80 md:w-96 lg:w-[420px] pointer-events-none select-none flex items-center justify-start">
         <DisintegratingImage
-          src="/hero-portrait-stipple.png" // Make sure this path is correct in your public folder
+          src="/hero-portrait-stipple.png"
           alt="Portrait disintegrating"
-          // Critical: Allow canvas visual width to be its intrinsic width.
-          // `h-full` maintains height based on container.
-          // `max-w-none` prevents CSS from shrinking its visual width.
-          className="block h-full max-w-none"
-          // *** Use new props for the desired effect ***
-          particleSamplingDensity={2} // Sample every 2nd pixel
-          particleDrawSize={1}        // Draw each particle as 1x1 pixel
-          brightnessThreshold={180}   // Adjust brightness check if needed
-          scrollTriggerOffset={50}    // Pixels past top to start effect
-          scrollEffectDuration={700}  // Duration (in scroll pixels) of the effect
-          maxDisplacementX={400}      // Max horizontal travel distance
-          fadeIntensity={1.5}         // How quickly particles fade (higher = faster)
-          canvasPaddingX={600}        // Extra canvas width (>= maxDisplacementX)
+          className="block h-full max-w-none opacity-50"
+          // --- Particle Behavior Props ---
+          particleSamplingDensity={2}
+          particleDrawSize={1}
+          brightnessThreshold={180}
+          particleColor="255, 255, 255" // Example: Orange tint
+          // --- Scroll Trigger Props ---
+          scrollTriggerOffset={0}
+          scrollEffectDuration={380} // Shorter duration
+          // --- Displacement & Fading ---
+          maxDisplacementX={1000}   // Base maximum travel distance
+          fadeIntensity={1.5}      // Fade slightly slower or adjust as needed
+          canvasPaddingX={1000}     // Ensure enough space for max displacement + spread
+          // --- NEW: Acceleration & Spread Control ---
+          accelerationPower={2.0}  // Quadratic ease-in (particles speed up)
+          spreadFactor={3}       // Early particles travel up to 1 + 1.5 = 2.5x maxDisplacementX
+          moveThresholdCurvePower={2.5} // Make right edge start significantly earlier
         />
       </div>
 
@@ -174,6 +185,7 @@ export default function HeroSection() {
               className="w-full max-w-3xl"
             >
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 md:gap-8">
+                {/* TypeScript now knows 'stat' is of type StatItem here */}
                 {stats.map((stat, index) => (
                   <motion.div
                     key={index}
