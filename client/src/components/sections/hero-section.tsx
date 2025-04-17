@@ -76,7 +76,7 @@ export default function HeroSection() {
         <DisintegratingImage
           src="/hero-portrait-stipple.png"
           alt="Portrait disintegrating"
-          className="block h-full max-w-none opacity-50"
+          className="block h-full max-w-none"
           // --- Particle Behavior Props ---
           particleSamplingDensity={2}
           particleDrawSize={1}
@@ -87,12 +87,12 @@ export default function HeroSection() {
           scrollEffectDuration={380} // Shorter duration
           // --- Displacement & Fading ---
           maxDisplacementX={1000}   // Base maximum travel distance
-          fadeIntensity={1.5}      // Fade slightly slower or adjust as needed
+          fadeIntensity={5.5}      // Fade slightly slower or adjust as needed
           canvasPaddingX={1000}     // Ensure enough space for max displacement + spread
           // --- NEW: Acceleration & Spread Control ---
-          accelerationPower={2.0}  // Quadratic ease-in (particles speed up)
-          spreadFactor={3}       // Early particles travel up to 1 + 1.5 = 2.5x maxDisplacementX
-          moveThresholdCurvePower={2.5} // Make right edge start significantly earlier
+          accelerationPower={3.0}  // Quadratic ease-in (particles speed up)
+          spreadFactor={50}       // Early particles travel up to 1 + 1.5 = 2.5x maxDisplacementX
+          moveThresholdCurvePower={2} // Make right edge start significantly earlier
         />
       </div>
 
