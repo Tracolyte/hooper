@@ -1,5 +1,5 @@
 // src/components/sections/hero-section.tsx
-import React from 'react'; // <--- Import React
+import React from 'react';
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -9,14 +9,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import DisintegratingImage from "@/components/ui/disintegrating-image";
 
-// +++ Define an interface for the structure of each stat item +++
+// Define an interface for the structure of each stat item
 interface StatItem {
   icon: React.ReactNode; // Use React.ReactNode for JSX elements
   value: string;
   label: string;
   delay: number;
 }
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 export default function HeroSection() {
   const isMobile = useIsMobile();
@@ -31,7 +30,7 @@ export default function HeroSection() {
     emailSignupSection?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // +++ Apply the interface to the stats array declaration +++
+  // Apply the interface to the stats array declaration
   const stats: StatItem[] = [
     {
       icon: <Users className="w-5 h-5 text-hooper-orange" />,
@@ -52,7 +51,6 @@ export default function HeroSection() {
       delay: 0.3,
     },
   ];
-  // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   return (
     <section className="relative bg-black pt-24 pb-16 sm:pt-32 sm:pb-20 md:py-32 overflow-hidden">
@@ -71,32 +69,63 @@ export default function HeroSection() {
         pointerColor="transparent"
       />
 
-      {/* Disintegrating Image Container */}
+      {/* Disintegrating Image Container - LEFT */}
       <div className="absolute inset-y-0 left-0 z-[1] w-72 xs:w-80 md:w-96 lg:w-[420px] pointer-events-none select-none flex items-center justify-start">
         <DisintegratingImage
-          src="/hero-portrait-stipple.png"
+          src="/hero-portrait-stipple.png" // Path to your portrait image
           alt="Portrait disintegrating"
-          className="block h-full max-w-none"
-          // --- Particle Behavior Props ---
+          className="block h-full max-w-none opacity-75"
+          // --- Props explicitly defined for the LEFT image ---
           particleSamplingDensity={2}
           particleDrawSize={1}
-          brightnessThreshold={180}
-          particleColor="255, 255, 255" // Example: Orange tint
-          // --- Scroll Trigger Props ---
+          brightnessThreshold={180} // Adjust if needed for portrait
+          particleColor="255, 255, 255"
           scrollTriggerOffset={0}
-          scrollEffectDuration={380} // Shorter duration
-          // --- Displacement & Fading ---
-          maxDisplacementX={1000}   // Base maximum travel distance
-          fadeIntensity={5.5}      // Fade slightly slower or adjust as needed
-          canvasPaddingX={1000}     // Ensure enough space for max displacement + spread
-          // --- NEW: Acceleration & Spread Control ---
-          accelerationPower={3.0}  // Quadratic ease-in (particles speed up)
-          spreadFactor={50}       // Early particles travel up to 1 + 1.5 = 2.5x maxDisplacementX
-          moveThresholdCurvePower={2} // Make right edge start significantly earlier
+          scrollEffectDuration={380}
+          maxDisplacementX={1000}   // Positive for rightward movement
+          fadeIntensity={5.5}
+          canvasPaddingX={1000}
+          accelerationPower={3.0}
+          spreadFactor={50}
+          moveThresholdCurvePower={2}
+          // --- End Left Image Props ---
         />
       </div>
 
-      {/* Main Hero Content (Ensure z-index is higher than image container) */}
+      {/* Disintegrating Image Container - RIGHT (Basketball) - MODIFIED */}
+      <div className={cn(
+          "absolute z-[1] pointer-events-none select-none",
+          "top-1/2 left-2/3", // Position top-left corner at 50% height, 66.66% width
+          "w-full h-full", // <<<--- ADJUST SIZE: Represents the visible quadrant (e.g., half width/height of full desired ball)
+          // Examples: w-40 h-40, w-48 h-48 - depends on your basketball image size & desired scale
+          "overflow-hidden" // <<<--- CRUCIAL: Clip the canvas to this container's bounds
+          // Optional: Add transform translate if you want the *center* of the quadrant at the position
+          // "-translate-x-1/2 -translate-y-1/2"
+      )}>
+        <DisintegratingImage
+          src="/basketball-stipple.png" // <<<--- PATH TO YOUR BASKETBALL IMAGE
+          alt="Basketball disintegrating"
+          // --- Canvas ClassName: Simplified ---
+          className="block" // Let the container clip it. Ensure no max-width/height here.
+          // --- Props explicitly defined for the RIGHT image ---
+          particleSamplingDensity={4}
+          particleDrawSize={1}
+          brightnessThreshold={100} // <<<--- TRY LOWERING THIS (e.g., 100) for the basketball if it's still not working, or adjust as needed
+          particleColor="255, 255, 255"
+          scrollTriggerOffset={-200}       // Keep offset relative to the container's new top position
+          scrollEffectDuration={380}
+          maxDisplacementX={-1000}     // <<<--- NEGATIVE value for leftward movement
+          fadeIntensity={5.5}
+          canvasPaddingX={0}         // Padding still useful for internal canvas width calculation
+          accelerationPower={3.0}
+          spreadFactor={100}
+          moveThresholdCurvePower={1}
+          // --- End Right Image Props ---
+        />
+      </div>
+
+
+      {/* Main Hero Content (Ensure z-index is higher than image containers) */}
       <div className="container relative z-10 mx-auto px-4 md:px-6">
         <div className="flex flex-col items-center justify-center text-center max-w-4xl mx-auto">
            { /* Motion divs for text and buttons */ }

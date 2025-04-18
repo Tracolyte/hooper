@@ -23,12 +23,8 @@ interface DisintegratingImageProps extends React.CanvasHTMLAttributes<HTMLCanvas
   maxDisplacementX?: number;
   fadeIntensity?: number;
   canvasPaddingX?: number;
-  // --- NEW PROPS ---
-  /** Power > 1 creates acceleration (ease-in). 1 is linear. < 1 is deceleration (ease-out). */
   accelerationPower?: number;
-  /** Multiplier affecting how much further early particles travel compared to late ones. 0 means no spread. */
   spreadFactor?: number;
-  /** Power applied to horizontal position for moveThreshold calculation. > 1 makes right side start sooner. */
   moveThresholdCurvePower?: number;
 }
 
@@ -44,9 +40,9 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
   maxDisplacementX = 150,
   fadeIntensity = 1.5,
   canvasPaddingX = 500,
-  accelerationPower = 2, // Default to quadratic acceleration (ease-in)
-  spreadFactor = 1.0,    // Default spread factor
-  moveThresholdCurvePower = 2, // Default curve power for threshold calculation
+  accelerationPower = 2,
+  spreadFactor = 1.0,
+  moveThresholdCurvePower = 2,
   ...props
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -58,7 +54,7 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
   const [scrollProgress, setScrollProgress] = useState(0);
   const componentTopRef = useRef<number | null>(null);
 
-  // --- Effect 1: Image Loading (no change) ---
+  // --- Effect 1: Image Loading ---
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -67,15 +63,32 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
       imageRef.current = img;
       setDimensions({ width: img.naturalWidth, height: img.naturalHeight });
       setIsImageLoaded(true);
+      if (canvasRef.current) {
+        const rect = canvasRef.current.getBoundingClientRect();
+        componentTopRef.current = rect.top + window.scrollY;
+      }
+      setScrollProgress(0);
     };
     img.onerror = () => {
       console.error("Failed to load image:", src);
+      setIsImageLoaded(false);
+    };
+    return () => {
+      img.onload = null;
+      img.onerror = null;
     };
   }, [src]);
 
   // --- Effect 2: Particle Initialization & Component Top Calculation ---
   useEffect(() => {
-    if (!isImageLoaded || !canvasRef.current || !imageRef.current || dimensions.width === 0) return;
+    if (!isImageLoaded || !canvasRef.current || !imageRef.current || dimensions.width === 0 || dimensions.height === 0) {
+      if (particlesRef.current.length > 0 && canvasRef.current) {
+        particlesRef.current = [];
+        const ctx = canvasRef.current.getContext('2d');
+        if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      }
+      return;
+    }
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -83,8 +96,8 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
 
     const effectiveCanvasWidth = dimensions.width + canvasPaddingX;
     if (canvas.width !== effectiveCanvasWidth || canvas.height !== dimensions.height) {
-        canvas.width = effectiveCanvasWidth;
-        canvas.height = dimensions.height;
+      canvas.width = effectiveCanvasWidth;
+      canvas.height = dimensions.height;
     }
 
     const rect = canvas.getBoundingClientRect();
@@ -99,220 +112,183 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     if (!tempCtx) return;
 
     tempCtx.drawImage(imageRef.current, 0, 0, dimensions.width, dimensions.height);
-    const imageData = tempCtx.getImageData(0, 0, dimensions.width, dimensions.height);
+    let imageData;
+    try {
+      imageData = tempCtx.getImageData(0, 0, dimensions.width, dimensions.height);
+    } catch (error) {
+      console.error("Error getting image data:", error);
+      return;
+    }
     const data = imageData.data;
     const imageWidth = dimensions.width;
 
     for (let y = 0; y < dimensions.height; y += particleSamplingDensity) {
-        for (let x = 0; x < dimensions.width; x += particleSamplingDensity) {
-            const index = (y * imageWidth + x) * 4;
-            const r = data[index];
-            const alpha = data[index + 3];
-
-            if (r > brightnessThreshold && alpha > 128) {
-                const normalizedX = x / imageWidth;
-                // Use moveThresholdCurvePower prop for threshold calculation
-                const moveThresholdBase = 1.0 - normalizedX;
-                const moveThreshold = Math.pow(moveThresholdBase, moveThresholdCurvePower);
-
-                particlesRef.current.push({
-                    x: x, y: y, originX: x, originY: y,
-                    opacity: 1,
-                    moveThreshold: Math.max(0, Math.min(1, moveThreshold))
-                });
-            }
-        }
-    }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  }, [isImageLoaded, dimensions, particleSamplingDensity, brightnessThreshold, canvasPaddingX, src, moveThresholdCurvePower]); // Added moveThresholdCurvePower dependency
-
-
-  // --- Effect 3: Scroll Handling (no change) ---
-  const handleScroll = useCallback(() => {
-    if (componentTopRef.current === null) {
-         if (canvasRef.current) {
-            const rect = canvasRef.current.getBoundingClientRect();
-            componentTopRef.current = rect.top + window.scrollY;
-            if (componentTopRef.current === null) return;
-         } else {
-            return;
-         }
-    }
-
-    const currentScrollY = window.scrollY;
-    const triggerStartScrollY = componentTopRef.current + scrollTriggerOffset;
-    const triggerEndScrollY = triggerStartScrollY + scrollEffectDuration;
-
-    let progress = 0;
-    if (currentScrollY >= triggerStartScrollY) {
-        progress = (currentScrollY - triggerStartScrollY) / scrollEffectDuration;
-    }
-    progress = Math.max(0, Math.min(1, progress));
-
-    setScrollProgress(prevProgress => {
-        if (Math.abs(progress - prevProgress) > 0.001 || (progress === 0 && prevProgress !== 0) || (progress === 1 && prevProgress !== 1)) {
-            return progress;
-        }
-        return prevProgress;
-    });
-  }, [scrollTriggerOffset, scrollEffectDuration]);
-
-  // Effect to recalculate componentTop on resize and setup scroll listener (no change)
-  useEffect(() => {
-      const updateComponentTop = () => {
-          if (canvasRef.current) {
-              const rect = canvasRef.current.getBoundingClientRect();
-              componentTopRef.current = rect.top + window.scrollY;
-              handleScroll();
+      for (let x = 0; x < dimensions.width; x += particleSamplingDensity) {
+        const idx = (y * imageWidth + x) * 4;
+        const r = data[idx], g = data[idx+1], b = data[idx+2], a = data[idx+3];
+        const brightness = (r + g + b) / 3;
+        if (brightness > brightnessThreshold && a > 128) {
+          const normalizedX = x / imageWidth;
+          let moveThresholdBase: number;
+          if (maxDisplacementX >= 0) {
+            moveThresholdBase = 1.0 - normalizedX;
+          } else {
+            moveThresholdBase = normalizedX;
           }
-      };
-
-      if (componentTopRef.current === null && canvasRef.current) {
-          updateComponentTop();
+          const moveThreshold = Math.pow(moveThresholdBase, moveThresholdCurvePower);
+          particlesRef.current.push({
+            x, y,
+            originX: x, originY: y,
+            opacity: 1,
+            moveThreshold: Math.max(0, Math.min(1, moveThreshold))
+          });
+        }
       }
+    }
 
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', updateComponentTop);
-      handleScroll();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    handleScroll();
+    if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+    animationFrameRef.current = requestAnimationFrame(draw);
 
-      return () => {
-          window.removeEventListener('scroll', handleScroll);
-          window.removeEventListener('resize', updateComponentTop);
-          if (animationFrameRef.current) {
-              cancelAnimationFrame(animationFrameRef.current);
-          }
-      };
+  }, [
+    isImageLoaded, dimensions, particleSamplingDensity, brightnessThreshold,
+    canvasPaddingX, src, moveThresholdCurvePower, maxDisplacementX,
+    particleColor, particleDrawSize
+  ]);
+
+  // --- Effect 3: Scroll Handling ---
+  const handleScroll = useCallback(() => {
+    if (componentTopRef.current === null && canvasRef.current) {
+      const rect = canvasRef.current.getBoundingClientRect();
+      if (rect.top !== 0 || rect.height !== 0) {
+        componentTopRef.current = rect.top + window.scrollY;
+      } else {
+        return;
+      }
+    }
+
+    const currentY = window.scrollY;
+    const dur = Math.max(1, scrollEffectDuration);
+    const start = (componentTopRef.current ?? 0) + scrollTriggerOffset;
+    const end = start + dur;
+    let prog = 0;
+    if (currentY <= start) prog = 0;
+    else if (currentY >= end) prog = 1;
+    else prog = (currentY - start) / dur;
+    prog = Math.max(0, Math.min(1, prog));
+
+    setScrollProgress(prev => (
+      Math.abs(prog - prev) > 0.001 || (prog === 0 && prev !== 0) || (prog === 1 && prev !== 1)
+        ? prog
+        : prev
+    ));
+  }, [scrollTriggerOffset, scrollEffectDuration, src]);
+
+  useEffect(() => {
+    const updateTop = () => {
+      if (canvasRef.current) {
+        const rect = canvasRef.current.getBoundingClientRect();
+        if (rect.top !== 0 || rect.height !== 0) {
+          componentTopRef.current = rect.top + window.scrollY;
+          handleScroll();
+        }
+      }
+    };
+    if (componentTopRef.current === null) updateTop();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateTop);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateTop);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+    };
   }, [handleScroll]);
 
-  // --- Effect 4: Animation Loop (MODIFIED) ---
+  // --- Effect 4: Animation Loop (draw) ---
   const draw = useCallback(() => {
-    if (!canvasRef.current || particlesRef.current.length === 0 || !dimensions.width) {
+    if (!canvasRef.current || !isImageLoaded || particlesRef.current.length === 0) {
       animationFrameRef.current = null;
       return;
     }
-
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const currentParticles = particlesRef.current;
-    const progress = scrollProgress; // Overall scroll progress (0-1)
-    let needsAnotherFrame = false;
-    const baseParticleColor = particleColor;
+    let needsFrame = false;
+    const baseColor = particleColor;
 
-    currentParticles.forEach(p => {
-      // Calculate the particle's normalized progress (0-1) within its active scroll range
-      let normalizedProgress = 0;
-      const progressRange = 1 - p.moveThreshold;
-      if (progress > p.moveThreshold && progressRange > 0.0001) {
-        const effectiveProgress = progress - p.moveThreshold;
-        normalizedProgress = Math.min(1, effectiveProgress / progressRange);
-      } else if (progress >= 1.0 && p.moveThreshold < 1.0) {
-         // Ensure particles that should have moved reach full progress if overall progress is 1
-         normalizedProgress = 1.0;
+    particlesRef.current.forEach(p => {
+      // compute normalizedProgress
+      let nProg = 0;
+      const range = 1 - p.moveThreshold;
+      if (scrollProgress > p.moveThreshold && range > 0.0001) {
+        nProg = Math.min(1, (scrollProgress - p.moveThreshold) / range);
+      } else if (scrollProgress >= 1 && p.moveThreshold < 0.9999) {
+        nProg = 1;
       }
 
-      // *** START: Acceleration & Spread Logic ***
+      const eased = Math.pow(nProg, accelerationPower);
 
-      // 1. Apply acceleration (ease-in) using accelerationPower
-      // Power > 1 makes it accelerate, Power = 1 is linear
-      const easedNormalizedProgress = Math.pow(normalizedProgress, accelerationPower);
+      // <-- UPDATED SPREAD LOGIC -->
+      const directionFactor = maxDisplacementX >= 0
+        ? p.moveThreshold
+        : (1 - p.moveThreshold);
+      const effectiveMaxDisplacementX =
+        maxDisplacementX * (1 + directionFactor * spreadFactor);
+      // ------------------------------
 
-      // 2. Calculate spread factor: particles starting earlier (lower threshold) travel further
-      // spreadFactor = 0 -> no spread, all aim for maxDisplacementX
-      // spreadFactor = 1 -> particles at threshold 0 aim for 2*maxDisplacementX, threshold 0.5 aim for 1.5*maxDisplacementX etc.
-      const effectiveMaxDisplacementX = maxDisplacementX * (1 + (1 - p.moveThreshold) * spreadFactor);
-
-      // 3. Calculate final displacement based on eased progress and effective max distance
-      const displacement = easedNormalizedProgress * effectiveMaxDisplacementX;
-
-      // *** END: Acceleration & Spread Logic ***
-
-      p.x = p.originX + displacement;
-      p.y = p.originY; // Keep original Y for horizontal disintegration
-
-      // Fade based on the *original* normalized progress (linear fade often looks better)
-      // Or you could fade based on easedNormalizedProgress for a different feel
-      p.opacity = Math.max(0, 1 - (normalizedProgress * fadeIntensity));
+      const disp = eased * effectiveMaxDisplacementX;
+      p.x = p.originX + disp;
+      p.y = p.originY;
+      p.opacity = Math.max(0, 1 - nProg * fadeIntensity);
 
       if (p.opacity > 0.01) {
-        ctx.fillStyle = `rgba(${baseParticleColor}, ${p.opacity})`;
+        ctx.fillStyle = `rgba(${baseColor},${p.opacity})`;
         ctx.fillRect(Math.floor(p.x), Math.floor(p.y), particleDrawSize, particleDrawSize);
       }
 
-      // Determine if animation needs to continue
-      if (normalizedProgress > 0 && normalizedProgress < 1 && p.opacity > 0.01) {
-          needsAnotherFrame = true;
-      } else if (progress === 0 && p.opacity < 1) { // Needs redraw if resetting
-           needsAnotherFrame = true;
+      if (nProg > 0 && nProg < 1 && p.opacity > 0.01) {
+        needsFrame = true;
       }
     });
 
-    // Request next frame if needed or if scroll is in progress
-    if (needsAnotherFrame || (scrollProgress > 0 && scrollProgress < 1)) {
-        animationFrameRef.current = requestAnimationFrame(draw);
+    if (needsFrame || (scrollProgress > 0 && scrollProgress < 1)) {
+      animationFrameRef.current = requestAnimationFrame(draw);
     } else {
-        // Handle final static draw states (progress = 0 or 1)
-        if (scrollProgress === 0) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            currentParticles.forEach(p => {
-                // Reset particle state explicitly for the draw
-                p.x = p.originX; p.y = p.originY; p.opacity = 1.0;
-                if (p.opacity > 0.01) { // Check original visibility criteria might be needed if brightness check was strict
-                   ctx.fillStyle = `rgba(${baseParticleColor}, 1)`;
-                   ctx.fillRect(Math.floor(p.originX), Math.floor(p.originY), particleDrawSize, particleDrawSize);
-                }
-            });
-        } else if (scrollProgress === 1 && !needsAnotherFrame) {
-             // Optional: Could perform a final draw at progress=1 state if needed,
-             // but the last frame before this condition should have drawn it correctly.
-             // Ensure particles are fully faded/displaced if logic requires.
-             // Example: Clear canvas if all particles should be gone.
-             // if (fadeIntensity >= 1 && spreadFactor >= 0) { // If particles are expected to fade or move off significantly
-             //    ctx.clearRect(0, 0, canvas.width, canvas.height);
-             // }
-        }
-        animationFrameRef.current = null;
+      animationFrameRef.current = null;
     }
-
   }, [
-      scrollProgress, dimensions.width, dimensions.height, particleDrawSize, particleColor,
-      maxDisplacementX, fadeIntensity, particleSamplingDensity, // Keep density dependency
-      brightnessThreshold, // Keep brightness dependency
-      canvasPaddingX, // Keep padding dependency
-      accelerationPower, // *** Add new prop ***
-      spreadFactor,      // *** Add new prop ***
-      moveThresholdCurvePower // Add dependency for moveThreshold calculation used in spread
-    ]);
+    isImageLoaded, scrollProgress,
+    particleDrawSize, particleColor,
+    maxDisplacementX, fadeIntensity,
+    accelerationPower, spreadFactor
+  ]);
 
-  // Effect to trigger animation loop when scrollProgress changes or image loads (no change)
+  // Trigger draw when scrollProgress changes or after init
   useEffect(() => {
     if (isImageLoaded && particlesRef.current.length > 0) {
-        if (animationFrameRef.current) {
-            cancelAnimationFrame(animationFrameRef.current);
-        }
-        animationFrameRef.current = requestAnimationFrame(draw);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = requestAnimationFrame(draw);
     }
-
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     };
-  }, [isImageLoaded, draw, scrollProgress]); // Draw is memoized with new dependencies
+  }, [isImageLoaded, draw, scrollProgress]);
 
-
-  // --- Render the Canvas Element (no change) ---
   return (
     <canvas
       ref={canvasRef}
       width={dimensions.width > 0 ? dimensions.width + canvasPaddingX : 300}
-      height={dimensions.height > 0 ? dimensions.height : 400}
-      className={cn("block", className)}
+      height={dimensions.height > 0 ? dimensions.height : 150}
+      className={cn(
+        "block transition-opacity duration-300 ease-in",
+        isImageLoaded ? "opacity-100" : "opacity-0",
+        className
+      )}
       {...props}
     />
   );
