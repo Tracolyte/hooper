@@ -188,7 +188,7 @@ export default function HeroSection() {
                 <Button
                   onClick={handleLearnMoreClick}
                   variant="outline"
-                  className="relative z-10 bg-white/5 text-white border-white/10 px-6 sm:px-8 py-2.5 sm:py-3 h-auto rounded-full font-semibold hover:bg-white/10 transition-all backdrop-blur-sm"
+                  className="relative z-10 bg-white/5 text-white border-white/10 px-6 sm:px-8 py-2.5 sm:py-3 h-auto rounded-full font-semibold hover:bg-white/10 hover:text-hooper-orange transition-all backdrop-blur-sm"
                 >
                   Learn More
                 </Button>

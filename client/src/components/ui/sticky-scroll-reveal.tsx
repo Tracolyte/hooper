@@ -98,7 +98,14 @@ export function StickyScrollReveal({
               >
                 {item.step}
               </div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">{item.title}</h3>
+              <h3 className={cn(
+  "text-xl md:text-2xl font-bold mb-2 transition-colors duration-300",
+  activeItem === index
+    ? "bg-gradient-to-r from-hooper-orange via-orange-400 to-orange-600 bg-clip-text text-transparent"
+    : "text-white"
+)}>
+  {item.title}
+</h3>
               <p className="text-hooper-dark-100">{item.description}</p>
             </div>
           ))}
