@@ -1,4 +1,3 @@
-// src/components/ui/disintegrating-image.tsx
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -43,6 +42,7 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
   accelerationPower = 2,
   spreadFactor = 1.0,
   moveThresholdCurvePower = 2,
+  style,
   ...props
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -54,7 +54,10 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
   const [scrollProgress, setScrollProgress] = useState(0);
   const componentTopRef = useRef<number | null>(null);
 
-  // --- Effect 1: Image Loading ---
+  // Calculate left padding so negative displacement is visible
+  const leftPad = Math.abs(Math.min(0, maxDisplacementX));
+
+  // Load image
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -79,22 +82,16 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     };
   }, [src]);
 
-  // --- Effect 2: Particle Initialization & Component Top Calculation ---
+  // Initialize particles
   useEffect(() => {
-    if (!isImageLoaded || !canvasRef.current || !imageRef.current || dimensions.width === 0 || dimensions.height === 0) {
-      if (particlesRef.current.length > 0 && canvasRef.current) {
-        particlesRef.current = [];
-        const ctx = canvasRef.current.getContext('2d');
-        if (ctx) ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      }
-      return;
-    }
+    if (!isImageLoaded || !canvasRef.current || !imageRef.current) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    const effectiveCanvasWidth = dimensions.width + canvasPaddingX;
+    // Make space on both sides
+    const effectiveCanvasWidth = dimensions.width + canvasPaddingX + leftPad;
     if (canvas.width !== effectiveCanvasWidth || canvas.height !== dimensions.height) {
       canvas.width = effectiveCanvasWidth;
       canvas.height = dimensions.height;
@@ -104,7 +101,6 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     componentTopRef.current = rect.top + window.scrollY;
 
     particlesRef.current = [];
-
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = dimensions.width;
     tempCanvas.height = dimensions.height;
@@ -115,8 +111,7 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     let imageData;
     try {
       imageData = tempCtx.getImageData(0, 0, dimensions.width, dimensions.height);
-    } catch (error) {
-      console.error("Error getting image data:", error);
+    } catch {
       return;
     }
     const data = imageData.data;
@@ -129,19 +124,9 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
         const brightness = (r + g + b) / 3;
         if (brightness > brightnessThreshold && a > 128) {
           const normalizedX = x / imageWidth;
-          let moveThresholdBase: number;
-          if (maxDisplacementX >= 0) {
-            moveThresholdBase = 1.0 - normalizedX;
-          } else {
-            moveThresholdBase = normalizedX;
-          }
+          const moveThresholdBase = maxDisplacementX >= 0 ? 1.0 - normalizedX : normalizedX;
           const moveThreshold = Math.pow(moveThresholdBase, moveThresholdCurvePower);
-          particlesRef.current.push({
-            x, y,
-            originX: x, originY: y,
-            opacity: 1,
-            moveThreshold: Math.max(0, Math.min(1, moveThreshold))
-          });
+          particlesRef.current.push({ x, y, originX: x, originY: y, opacity: 1, moveThreshold });
         }
       }
     }
@@ -151,23 +136,13 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
     animationFrameRef.current = requestAnimationFrame(draw);
 
-  }, [
-    isImageLoaded, dimensions, particleSamplingDensity, brightnessThreshold,
-    canvasPaddingX, src, moveThresholdCurvePower, maxDisplacementX,
-    particleColor, particleDrawSize
-  ]);
+  }, [isImageLoaded, dimensions, particleSamplingDensity, brightnessThreshold, canvasPaddingX, src, moveThresholdCurvePower, maxDisplacementX]);
 
-  // --- Effect 3: Scroll Handling ---
   const handleScroll = useCallback(() => {
     if (componentTopRef.current === null && canvasRef.current) {
       const rect = canvasRef.current.getBoundingClientRect();
-      if (rect.top !== 0 || rect.height !== 0) {
-        componentTopRef.current = rect.top + window.scrollY;
-      } else {
-        return;
-      }
+      componentTopRef.current = rect.top + window.scrollY;
     }
-
     const currentY = window.scrollY;
     const dur = Math.max(1, scrollEffectDuration);
     const start = (componentTopRef.current ?? 0) + scrollTriggerOffset;
@@ -177,25 +152,17 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     else if (currentY >= end) prog = 1;
     else prog = (currentY - start) / dur;
     prog = Math.max(0, Math.min(1, prog));
-
-    setScrollProgress(prev => (
-      Math.abs(prog - prev) > 0.001 || (prog === 0 && prev !== 0) || (prog === 1 && prev !== 1)
-        ? prog
-        : prev
-    ));
-  }, [scrollTriggerOffset, scrollEffectDuration, src]);
+    setScrollProgress(prev => Math.abs(prog - prev) > 0.001 || (prog === 0 && prev !== 0) || (prog === 1 && prev !== 1) ? prog : prev);
+  }, [scrollTriggerOffset, scrollEffectDuration]);
 
   useEffect(() => {
     const updateTop = () => {
       if (canvasRef.current) {
         const rect = canvasRef.current.getBoundingClientRect();
-        if (rect.top !== 0 || rect.height !== 0) {
-          componentTopRef.current = rect.top + window.scrollY;
-          handleScroll();
-        }
+        componentTopRef.current = rect.top + window.scrollY;
+        handleScroll();
       }
     };
-    if (componentTopRef.current === null) updateTop();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', updateTop);
     handleScroll();
@@ -206,89 +173,54 @@ const DisintegratingImage: React.FC<DisintegratingImageProps> = ({
     };
   }, [handleScroll]);
 
-  // --- Effect 4: Animation Loop (draw) ---
+  // Draw loop
   const draw = useCallback(() => {
-    if (!canvasRef.current || !isImageLoaded || particlesRef.current.length === 0) {
-      animationFrameRef.current = null;
-      return;
-    }
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
+    if (!canvas || !isImageLoaded || particlesRef.current.length === 0) return;
+    const ctx = canvas.getContext('2d'); if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     let needsFrame = false;
-    const baseColor = particleColor;
-
     particlesRef.current.forEach(p => {
-      // compute normalizedProgress
       let nProg = 0;
       const range = 1 - p.moveThreshold;
-      if (scrollProgress > p.moveThreshold && range > 0.0001) {
-        nProg = Math.min(1, (scrollProgress - p.moveThreshold) / range);
-      } else if (scrollProgress >= 1 && p.moveThreshold < 0.9999) {
-        nProg = 1;
-      }
-
+      if (scrollProgress > p.moveThreshold && range > 0.0001) nProg = Math.min(1, (scrollProgress - p.moveThreshold)/range);
+      else if (scrollProgress >= 1 && p.moveThreshold < 0.9999) nProg = 1;
       const eased = Math.pow(nProg, accelerationPower);
-
-      // <-- UPDATED SPREAD LOGIC -->
-      const directionFactor = maxDisplacementX >= 0
-        ? p.moveThreshold
-        : (1 - p.moveThreshold);
-      const effectiveMaxDisplacementX =
-        maxDisplacementX * (1 + directionFactor * spreadFactor);
-      // ------------------------------
-
+      const directionFactor = maxDisplacementX >= 0 ? p.moveThreshold : (1 - p.moveThreshold);
+      const effectiveMaxDisplacementX = maxDisplacementX * (1 + directionFactor * spreadFactor);
       const disp = eased * effectiveMaxDisplacementX;
       p.x = p.originX + disp;
-      p.y = p.originY;
       p.opacity = Math.max(0, 1 - nProg * fadeIntensity);
-
       if (p.opacity > 0.01) {
-        ctx.fillStyle = `rgba(${baseColor},${p.opacity})`;
-        ctx.fillRect(Math.floor(p.x), Math.floor(p.y), particleDrawSize, particleDrawSize);
+        ctx.fillStyle = `rgba(${particleColor},${p.opacity})`;
+        const drawX = p.originX + disp + leftPad;
+        ctx.fillRect(Math.floor(drawX), Math.floor(p.y), particleDrawSize, particleDrawSize);
       }
-
-      if (nProg > 0 && nProg < 1 && p.opacity > 0.01) {
-        needsFrame = true;
-      }
+      if (nProg > 0 && nProg < 1 && p.opacity > 0.01) needsFrame = true;
     });
+    if (needsFrame || (scrollProgress > 0 && scrollProgress < 1)) animationFrameRef.current = requestAnimationFrame(draw);
+  }, [isImageLoaded, scrollProgress, particleDrawSize, particleColor, maxDisplacementX, fadeIntensity, accelerationPower, spreadFactor, leftPad]);
 
-    if (needsFrame || (scrollProgress > 0 && scrollProgress < 1)) {
-      animationFrameRef.current = requestAnimationFrame(draw);
-    } else {
-      animationFrameRef.current = null;
-    }
-  }, [
-    isImageLoaded, scrollProgress,
-    particleDrawSize, particleColor,
-    maxDisplacementX, fadeIntensity,
-    accelerationPower, spreadFactor
-  ]);
-
-  // Trigger draw when scrollProgress changes or after init
+  // Trigger draw on scrollProgress change
   useEffect(() => {
     if (isImageLoaded && particlesRef.current.length > 0) {
       if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = requestAnimationFrame(draw);
     }
-    return () => {
-      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
-    };
+    return () => { if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current); };
   }, [isImageLoaded, draw, scrollProgress]);
 
   return (
     <canvas
       ref={canvasRef}
-      width={dimensions.width > 0 ? dimensions.width + canvasPaddingX : 300}
+      width={dimensions.width > 0 ? dimensions.width + canvasPaddingX + leftPad : 300}
       height={dimensions.height > 0 ? dimensions.height : 150}
       className={cn(
         "block transition-opacity duration-300 ease-in",
         isImageLoaded ? "opacity-100" : "opacity-0",
         className
       )}
+      style={{ marginLeft: `-${leftPad}px`, ...style }}
       {...props}
     />
   );
