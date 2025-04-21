@@ -153,7 +153,7 @@ export default function Header() {
                 className="rounded-full pointer-events-none"
               />
               <Button 
-                className="relative z-10 bg-white/10 border border-white/10 hover:bg-white/20 text-white font-medium px-5 py-2 h-auto rounded-full backdrop-blur-sm"
+                className="relative z-10 bg-gradient-to-r from-hooper-orange to-orange-500 border-0 text-white font-medium px-5 py-2 h-auto rounded-full backdrop-blur-sm shadow-md hover:opacity-90 transition-opacity"
                 onClick={() => {
                   const emailSignupSection = document.getElementById("email-signup");
                   if (emailSignupSection) {
