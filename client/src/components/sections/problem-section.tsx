@@ -58,7 +58,7 @@ export default function ProblemSection() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ y: -5, scale: 1.02 }}
-              className="bg-black/40 p-8 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/10 backdrop-blur-sm relative"
+              className="group bg-black/40 p-8 rounded-xl hover:bg-white/5 transition-all duration-300 border border-white/10 backdrop-blur-sm relative"
             >
               <GlowingEffect
                 spread={40}
@@ -86,7 +86,7 @@ export default function ProblemSection() {
               >
                 {problem.icon}
               </motion.div>
-              <h3 className="text-xl font-bold mb-3">{problem.title}</h3>
+              <h3 className="text-xl font-bold mb-3 group-hover:bg-gradient-to-r group-hover:from-hooper-orange group-hover:to-orange-400 group-hover:bg-clip-text group-hover:text-transparent transition-colors duration-500 ease-in-out">{problem.title}</h3>
               <p className="text-gray-400">
                 {problem.description}
               </p>

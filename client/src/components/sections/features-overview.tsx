@@ -221,7 +221,7 @@ function FeatureCard({ feature, index }: FeatureCardProps) {
           <Icon className="h-6 w-6 text-white" />
         </div>
 
-        <h3 className="text-2xl font-bold mb-3 transition-colors group-hover:bg-gradient-to-r group-hover:from-hooper-orange group-hover:via-orange-400 group-hover:to-orange-600 group-hover:bg-clip-text group-hover:text-transparent">
+        <h3 className="text-2xl font-bold mb-3 transition-colors duration-500 ease-in-out group-hover:bg-gradient-to-r group-hover:from-hooper-orange group-hover:via-orange-400 group-hover:to-orange-600 group-hover:bg-clip-text group-hover:text-transparent">
   {title}
 </h3>
         <p className="text-gray-300 mb-8">{description}</p>

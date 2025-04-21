@@ -9,9 +9,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
           <div>
             <div className="flex items-center mb-6">
-              <div className="p-1.5 mr-2 bg-gradient-to-br from-hooper-orange to-hooper-brown rounded-full">
-                <Circle className="h-4 w-4 text-white fill-white" />
-              </div>
+              <div className="mr-2 w-7 h-7 rounded-full">
+  <img src="/hooper-icon-true.png" alt="Hooper Logo" className="w-full h-full object-contain" />
+</div>
               <div className="text-xl font-bold tracking-tighter">
                 <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">HOOPER</span>
               </div>
