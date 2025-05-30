@@ -177,7 +177,7 @@ export default function Features() {
             <div className="pt-32 pb-20 bg-black">
                 <div className="container mx-auto px-4 md:px-6">
                     {/* --- HERO SECTION --- */}
-                    <div className="text-center mb-16 md:mb-20"> {/* Adjusted margin */}
+                    <div className="text-center"> {/* Adjusted margin */}
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
