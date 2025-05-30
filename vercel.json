@@ -1,34 +1,34 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "package.json",
-        "use": "@vercel/node",
-        "config": {
-          "includeFiles": ["dist/index.js", "dist/public/**"]
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["dist/**"]
       }
-    ],
-    "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/dist/index.js"
-      },
-      {
-        "src": "/assets/(.*)",
-        "headers": { "cache-control": "public, max-age=31536000, immutable" },
-        "dest": "/dist/public/assets/$1"
-      },
-      {
-        "src": "/(favicon\\.ico|vite\\.svg)",
-        "dest": "/dist/public/$1"
-      },
-      {
-        "handle": "filesystem"
-      },
-      {
-        "src": "/.*",
-        "dest": "/dist/public/index.html"
-      }
-    ]
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/dist/index.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" },
+      "dest": "/dist/public/assets/$1"
+    },
+    {
+      "src": "/(favicon\\.ico|vite\\.svg|.*\\.(png|jpg|jpeg|gif|svg|ico))",
+      "dest": "/dist/public/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/dist/public/index.html"
+    }
+  ]
 }
