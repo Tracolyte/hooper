@@ -50,19 +50,7 @@ export default function EmailSignup() {
 
   const signupMutation = useMutation({
     mutationFn: async (data: EmailSignupFormValues) => {
-      // Replace with your actual API call logic
-      console.log("Simulating API call with:", data);
-      // Example: const response = await fetch('/api/signup', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json'} });
-      // if (!response.ok) throw new Error('Network response was not ok');
-      // return response.json();
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-      // Simulate potential error
-      // if (data.email.includes('error')) {
-      //   throw new Error("Simulated server error for this email.");
-      // }
-      return { message: "Signup successful" }; // Simulate successful response
-      // Use apiRequest if you have it set up:
-      // return apiRequest("POST", "/api/signup", data);
+      return apiRequest("POST", "/api/signup", data);
     },
     onSuccess: () => {
       toast({
