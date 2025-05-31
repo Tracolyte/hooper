@@ -11,7 +11,7 @@ const features = [
     icon: Shield,
     description: "Live data showing which courts are open, how many players are present, and estimated wait times.",
     color: "orange",
-    image: "https://images.unsplash.com/photo-1546519638-68e109acd27d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "",
     features: [
       "Live court occupancy sensors",
       "Predicted peak times",
@@ -23,7 +23,7 @@ const features = [
     icon: Users,
     description: "Join existing games or create your own. Filter by skill level, game type, and more.",
     color: "brown",
-    image: "https://images.unsplash.com/photo-1529693662653-9d480530a697?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "",
     features: [
       "Skill-level matching",
       "Game scheduling",
@@ -35,7 +35,7 @@ const features = [
     icon: CreditCard,
     description: "Purchase digital day passes for partner facilities directly through the app with no membership required.",
     color: "orange",
-    image: "https://images.unsplash.com/photo-1511205451669-bc1e9dd0b590?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "",
     features: [
       "One-click payments",
       "Digital entry passes",
@@ -47,7 +47,7 @@ const features = [
     icon: MessageSquare,
     description: "Create and join groups of players with similar schedules, skill levels, or location preferences.",
     color: "brown",
-    image: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    image: "",
     features: [
       "Group messaging",
       "Game scheduling",

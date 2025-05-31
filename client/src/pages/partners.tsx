@@ -100,7 +100,7 @@ export default function PartnersPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-3xl md:text-5xl font-bold mb-12 md:mb-16 text-center"
             >
-              <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">How It Works</span>
+              <span className="bg-gradient-to-r from-orange-500 via-orange-400 to-orange-500 bg-clip-text text-transparent">How It Works</span>
             </motion.h2>
             
             <div className="space-y-8 md:space-y-10">

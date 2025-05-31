@@ -121,19 +121,7 @@ export default function PartnersSection() {
   return (
     <section id="partners" className="py-20 md:py-32 bg-black relative overflow-hidden">
       {/* Added BackgroundGradientAnimation, similar to HeroSection */}
-      <BackgroundGradientAnimation
-        containerClassName="absolute inset-0 z-0"
-        className="absolute inset-0 opacity-20"
-        interactive={false}
-        gradientBackgroundStart="#000000"
-        gradientBackgroundEnd="#050505"
-        firstColor="hsl(21deg 90% 50% / 30%)"
-        secondColor="hsl(31deg 90% 40% / 30%)"
-        thirdColor="hsl(41deg 90% 30% / 30%)"
-        fourthColor="hsl(11deg 90% 40% / 20%)"
-        fifthColor="hsl(21deg 90% 50% / 40%)"
-        pointerColor="transparent"
-      />
+
 
       {/* Existing background blur elements - these will render on top of the BackgroundGradientAnimation due to DOM order and z-index */}
       <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-to-b from-hooper-orange/10 to-transparent rounded-full blur-[120px] transform -translate-x-1/2 -translate-y-1/2"></div>
