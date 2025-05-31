@@ -1,10 +1,10 @@
-import { insertEmailSignupSchema } from '../shared/schema.js';
+const { insertEmailSignupSchema } = require('./schema');
 
 // Simple in-memory storage for demo - replace with database in production
 let emailSignups = [];
 let currentId = 1;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Handle CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -47,4 +47,4 @@ export default async function handler(req, res) {
     console.error("Error in email signup:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
-} 
+};
