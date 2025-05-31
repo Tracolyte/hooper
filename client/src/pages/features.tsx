@@ -33,7 +33,7 @@ const featuresData = [
         description: "Find new places to play in your area. Filter for indoor/outdoor, court quality, skill level, peak hours, and amenities like water fountains or bathrooms.",
         color: "brown" as const,
         icon: featureIcons["Court Discovery"],
-        imageSrc: "./public/outdoor-court.png" // Example outdoor court
+        imageSrc: "/outdoor-court.png" // Example outdoor court
     },
     {
         title: "Game Finding & Scheduling",
@@ -61,7 +61,7 @@ const featuresData = [
         description: "Track your game history, preferred courts, skill progression, and connect with other players in your area who match your style.",
         color: "brown" as const,
         icon: featureIcons["Optional Profiles"],
-        imageSrc: "./public/profiles.jpg" // Example player profile idea
+        imageSrc: "/profiles.jpg" // Example player profile idea
     }
 ];
 
