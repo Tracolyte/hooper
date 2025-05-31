@@ -1,4 +1,3 @@
-//// src/components/sections/hero-section.tsx
 import React from 'react';
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
 import { Button } from "@/components/ui/button";
@@ -66,8 +65,11 @@ export default function HeroSection() {
         pointerColor="transparent"
       />
 
-      {/* LEFT image */}
-      <div className="absolute inset-y-0 left-0 z-[1] w-72 xs:w-80 md:w-96 lg:w-[420px] pointer-events-none select-none flex items-center justify-start">
+      {/* LEFT image - Hidden on mobile */}
+      <div className={cn(
+          "absolute inset-y-0 left-0 z-[1] w-72 xs:w-80 md:w-96 lg:w-[420px] pointer-events-none select-none flex items-center justify-start",
+          isMobile && "hidden" // This hides the left image on mobile
+      )}>
         <DisintegratingImage
           src="/hero-portrait-stipple.png"
           alt="Portrait disintegrating"
@@ -87,17 +89,21 @@ export default function HeroSection() {
         />
       </div>
 
-      {/* RIGHT image */}
+      {/* RIGHT image - Adjusted for mobile */}
       <div className={cn(
           "absolute z-[1] pointer-events-none select-none",
-          "top-1/2 left-2/3",
-          "w-full h-full"
+          isMobile 
+            ? "top-[8vh] right-[2vw] w-[45vw] max-w-[160px] h-auto" // Mobile: Positioned upper-right, responsive width
+            : "top-1/2 left-2/3 w-full h-full" // Desktop: Original classes
       )}>
         <DisintegratingImage
           src="/basketball-stipple.png"
           alt="Basketball disintegrating"
-          className="block opacity-75"
-          particleSamplingDensity={4}
+          className={cn(
+              "block opacity-75",
+              isMobile ? "w-full h-auto" : "" // Mobile: Image scales to fit its container
+          )}
+          particleSamplingDensity={isMobile ? 2 : 4} // Optional: reduce density on mobile for performance
           particleDrawSize={1}
           brightnessThreshold={100}
           particleColor="255, 255, 255"
@@ -111,8 +117,6 @@ export default function HeroSection() {
           moveThresholdCurvePower={1}
         />
       </div>
-
-
 
       {/* Main Hero Content (Ensure z-index is higher than image containers) */}
       <div className="container relative z-10 mx-auto px-4 md:px-6">
@@ -141,7 +145,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
-              className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6" // Ensure base text color is white or similar
+              className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6"
             >
               Find{" "}
               <span className="bg-gradient-to-r from-hooper-orange via-orange-500 to-orange-600 bg-clip-text text-transparent">
@@ -203,7 +207,6 @@ export default function HeroSection() {
               className="w-full max-w-3xl"
             >
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-5 md:gap-8">
-                {/* TypeScript now knows 'stat' is of type StatItem here */}
                 {stats.map((stat, index) => (
                   <motion.div
                     key={index}
@@ -214,7 +217,7 @@ export default function HeroSection() {
                       "flex flex-col items-center rounded-xl bg-white/5 p-3 sm:p-4 backdrop-blur-sm border border-white/5 relative",
                       index === 2 &&
                         isMobile &&
-                        "col-span-2 mx-auto w-full max-w-[250px]" // Adjusts last item on mobile
+                        "col-span-2 mx-auto w-full max-w-[250px]"
                     )}
                   >
                     <GlowingEffect
@@ -227,10 +230,10 @@ export default function HeroSection() {
                     <div className="mb-1 rounded-full bg-black/20 p-1.5 sm:p-2">
                       {stat.icon}
                     </div>
-                    <div className="text-xl sm:text-2xl font-bold text-white"> {/* Ensure text color */}
+                    <div className="text-xl sm:text-2xl font-bold text-white">
                       {stat.value}
                     </div>
-                    <div className="text-xs sm:text-sm text-gray-400"> {/* Ensure text color */}
+                    <div className="text-xs sm:text-sm text-gray-400">
                       {stat.label}
                     </div>
                   </motion.div>
