@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { DollarSign, BarChart2, Megaphone, Shield, CheckCircle2, ArrowRight, Mail } from "lucide-react";
 import { motion } from "framer-motion";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
+import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation"; // Added import
 import { useState } from "react";
 
 const partnerInterestSchema = z.object({
@@ -119,11 +120,26 @@ export default function PartnersSection() {
 
   return (
     <section id="partners" className="py-20 md:py-32 bg-black relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-to-b from-hooper-brown/10 to-transparent rounded-full blur-[120px] transform -translate-x-1/2 -translate-y-1/2"></div>
-      <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-t from-hooper-orange/10 to-transparent rounded-full blur-[120px] transform translate-x-1/2 translate-y-1/2"></div>
+      {/* Added BackgroundGradientAnimation, similar to HeroSection */}
+      <BackgroundGradientAnimation
+        containerClassName="absolute inset-0 z-0"
+        className="absolute inset-0 opacity-20"
+        interactive={false}
+        gradientBackgroundStart="#000000"
+        gradientBackgroundEnd="#050505"
+        firstColor="hsl(21deg 90% 50% / 30%)"
+        secondColor="hsl(31deg 90% 40% / 30%)"
+        thirdColor="hsl(41deg 90% 30% / 30%)"
+        fourthColor="hsl(11deg 90% 40% / 20%)"
+        fifthColor="hsl(21deg 90% 50% / 40%)"
+        pointerColor="transparent"
+      />
 
-      <div className="container relative z-10 mx-auto px-4 md:px-6">
+      {/* Existing background blur elements - these will render on top of the BackgroundGradientAnimation due to DOM order and z-index */}
+      <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-to-b from-hooper-orange/10 to-transparent rounded-full blur-[120px] transform -translate-x-1/2 -translate-y-1/2"></div>
+      <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-t from-hooper-brown/10 to-transparent rounded-full blur-[120px] transform translate-x-1/2 translate-y-1/2"></div>
+
+      <div className="container relative z-10 mx-auto px-4 md:px-6"> {/* Content container is z-10 to be above background elements */}
         <motion.div
           className="max-w-3xl mx-auto text-center mb-16 md:mb-24"
           initial={{ opacity: 0, y: 20 }}
@@ -131,11 +147,11 @@ export default function PartnersSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-block rounded-full bg-gradient-to-r from-hooper-brown/20 to-hooper-orange/20 px-4 py-1.5 mb-4">
-            <span className="text-sm font-medium tracking-wide text-hooper-brown">Partnership Benefits</span>
+          <div className="inline-block rounded-full bg-gradient-to-r from-hooper-orange/20 to-hooper-brown/20 px-4 py-1.5 mb-4">
+            <span className="text-sm font-medium tracking-wide text-hooper-orange">Partnership Benefits</span>
           </div>
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
-            Why <span className="bg-gradient-to-r from-hooper-brown to-hooper-orange bg-clip-text text-transparent">Partner</span> with Hooper?
+            Why <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">Partner</span> with Hooper?
           </h2>
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
             Join hundreds of facilities already benefiting from increased utilization and revenue.
@@ -153,10 +169,10 @@ export default function PartnersSection() {
               whileHover="hover"
               viewport={{ once: true, amount: 0.3 }}
               variants={cardVariants}
-              className="group relative rounded-3xl bg-hooper-dark-500/90 backdrop-blur-sm border border-white/5 shadow-xl transition-all hover:shadow-2xl"
+              className="group relative rounded-3xl bg-black/80 backdrop-blur-sm border border-white/10 shadow-xl transition-all hover:shadow-2xl"
             >
-              {/* Background gradient effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-hooper-brown to-hooper-orange rounded-3xl blur opacity-30 pointer-events-none group-hover:opacity-50 transition-opacity duration-300"></div>
+              {/* Background gradient effect for card - this is separate from the section background */}
+              <div className="absolute -inset-1 rounded-3xl blur opacity-30 pointer-events-none group-hover:opacity-50 transition-opacity duration-300"></div>
               
               <div className="relative z-20 p-6 md:p-8 h-full flex flex-col">
                 <GlowingEffect
@@ -187,7 +203,7 @@ export default function PartnersSection() {
                   >
                     {benefit.icon}
                   </motion.div>
-                  <h3 className="text-xl md:text-2xl font-bold transition-colors duration-500 ease-in-out group-hover:bg-gradient-to-r group-hover:from-hooper-brown group-hover:via-amber-600 group-hover:to-hooper-orange group-hover:bg-clip-text group-hover:text-transparent">
+                  <h3 className="text-xl md:text-2xl font-bold transition-colors duration-500 ease-in-out group-hover:bg-gradient-to-r group-hover:from-hooper-orange group-hover:via-orange-400 group-hover:to-orange-600 group-hover:bg-clip-text group-hover:text-transparent">
                     {benefit.title}
                   </h3>
                 </div>
@@ -232,8 +248,8 @@ export default function PartnersSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="relative">
-            {/* Background decorative blur */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-hooper-brown to-hooper-orange rounded-3xl blur-lg opacity-30 pointer-events-none"></div>
+            {/* Background decorative blur for form container */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-3xl blur-lg opacity-30 pointer-events-none"></div>
 
             <div className="relative bg-black/80 backdrop-blur-xl rounded-3xl border border-white/10 p-8 md:p-12 shadow-2xl">
               <GlowingEffect
@@ -257,7 +273,7 @@ export default function PartnersSection() {
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
-                    className="bg-gradient-to-r from-hooper-brown to-hooper-orange rounded-full p-4 mb-6"
+                    className="bg-gradient-to-r from-hooper-orange to-hooper-brown rounded-full p-4 mb-6"
                   >
                     <CheckCircle2 className="h-10 w-10 text-white" />
                   </motion.div>
@@ -271,15 +287,15 @@ export default function PartnersSection() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                 {/* Left side - Info */}
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to <span className="bg-gradient-to-r from-hooper-brown to-hooper-orange bg-clip-text text-transparent">Partner</span>?</h3>
+                  <h3 className="text-2xl md:text-3xl font-bold mb-4">Ready to <span className="bg-gradient-to-r from-hooper-orange to-orange-400 bg-clip-text text-transparent">Partner</span> ?</h3>
                   <p className="text-gray-300 mb-8 leading-relaxed">
                     Join our network of successful facility partners and start seeing results immediately. Our team will work with you every step of the way.
                   </p>
                   
                   <div className="space-y-4">
                     <div className="flex items-center">
-                      <div className="bg-hooper-brown/20 p-2 rounded-full mr-4">
-                        <Mail className="h-5 w-5 text-hooper-brown" />
+                      <div className="bg-hooper-orange/20 p-2 rounded-full mr-4">
+                        <Mail className="h-5 w-5 text-hooper-orange" />
                       </div>
                       <div>
                         <h4 className="font-medium mb-1">Quick Response</h4>
@@ -287,8 +303,8 @@ export default function PartnersSection() {
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <div className="bg-hooper-orange/20 p-2 rounded-full mr-4">
-                        <CheckCircle2 className="h-5 w-5 text-hooper-orange" />
+                      <div className="bg-hooper-brown/20 p-2 rounded-full mr-4">
+                        <CheckCircle2 className="h-5 w-5 text-hooper-brown" />
                       </div>
                       <div>
                         <h4 className="font-medium mb-1">Custom Solutions</h4>
@@ -299,7 +315,7 @@ export default function PartnersSection() {
                 </div>
 
                 {/* Right side - Form */}
-                <div className="relative z-[5]">
+                <div className="relative z-[5]"> {/* z-index to ensure form elements are interactive above any local effects */}
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                       <FormField
@@ -312,7 +328,7 @@ export default function PartnersSection() {
                               <Input
                                 placeholder="Your Gym or Recreation Center"
                                 {...field}
-                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-brown focus:ring-offset-2 focus:ring-offset-black py-3 px-4 rounded-lg h-auto"
+                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-orange focus:ring-offset-2 focus:ring-offset-black py-3 px-4 rounded-lg h-auto"
                               />
                             </FormControl>
                             <FormMessage className="text-red-400 pt-1 text-sm" />
@@ -370,7 +386,7 @@ export default function PartnersSection() {
                                 type="email"
                                 placeholder="your@email.com"
                                 {...field}
-                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-brown focus:ring-offset-2 focus:ring-offset-black py-3 px-4 rounded-lg h-auto"
+                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-orange focus:ring-offset-2 focus:ring-offset-black py-3 px-4 rounded-lg h-auto"
                               />
                             </FormControl>
                             <FormMessage className="text-red-400 pt-1 text-sm" />
@@ -389,7 +405,7 @@ export default function PartnersSection() {
                                 placeholder="Tell us about your facility and basketball courts"
                                 rows={4}
                                 {...field}
-                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-brown focus:ring-offset-2 focus:ring-offset-black resize-none"
+                                className="w-full bg-white/5 border-white/10 placeholder-gray-500 text-white focus:ring-2 focus:ring-hooper-orange focus:ring-offset-2 focus:ring-offset-black resize-none"
                               />
                             </FormControl>
                             <FormMessage className="text-red-400 pt-1 text-sm" />
@@ -399,7 +415,7 @@ export default function PartnersSection() {
                       
                       <Button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-hooper-brown to-hooper-orange text-white font-semibold text-base py-3 h-auto rounded-lg hover:opacity-95 transition-opacity flex items-center justify-center shadow-lg focus-visible:ring-2 focus-visible:ring-hooper-brown focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:opacity-60"
+                        className="w-full bg-gradient-to-r from-hooper-orange to-hooper-brown text-white font-semibold text-base py-3 h-auto rounded-lg hover:opacity-95 transition-opacity flex items-center justify-center shadow-lg focus-visible:ring-2 focus-visible:ring-hooper-orange focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:opacity-60"
                         disabled={interestMutation.isPending}
                       >
                         {interestMutation.isPending ? (
